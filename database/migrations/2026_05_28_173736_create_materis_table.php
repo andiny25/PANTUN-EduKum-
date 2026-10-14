@@ -6,36 +6,29 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('materi', function (Blueprint $table) {
 
             $table->id();
 
+            $table->foreignId('kategori_id')
+                ->constrained('kategoris')
+                ->restrictOnDelete();
+
             $table->string('judul');
-            $table->string('kategori');
             $table->string('tipe');
-
-            $table->string('penulis');
-
-            $table->date('tanggal_dibuat');
-
-            $table->string('status');
-
+            $table->string('penulis')->nullable();
+            $table->text('deskripsi')->nullable();
+            $table->string('status')->default('Aktif');
             $table->string('file')->nullable();
 
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('materis');
+        Schema::dropIfExists('materi');
     }
 };

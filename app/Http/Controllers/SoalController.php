@@ -8,142 +8,397 @@ use App\Models\Soal;
 
 class SoalController extends Controller
 {
-
-    // ===============================
-    // HALAMAN DAFTAR SOAL
-    // ===============================
+    // =====================================================
+    // DAFTAR SOAL
+    // =====================================================
 
     public function index($id)
     {
-        $kuis = Kuis::findOrFail($id);
+        $kuis = Kuis::with('kategori')
+            ->findOrFail($id);
 
-        $soal = Soal::where('kuis_id', $id)->get();
+        $soal = Soal::where(
+                'kuis_id',
+                $id
+            )
+            ->latest()
+            ->get();
 
-        return view('kuis.show', compact('kuis', 'soal'));
+        return view(
+            'kuis.show',
+            compact(
+                'kuis',
+                'soal'
+            )
+        );
     }
 
-    // ===============================
-    // HALAMAN TAMBAH SOAL
-    // ===============================
+
+    // =====================================================
+    // FORM TAMBAH SOAL
+    // =====================================================
 
     public function create($id)
     {
         $kuis = Kuis::findOrFail($id);
 
-        return view('soal.create', compact('kuis'));
+        // Hitung jumlah soal yang sudah dibuat
+        $jumlahSoalSaatIni =
+            Soal::where(
+                'kuis_id',
+                $kuis->id
+            )->count();
+
+
+        // =================================================
+        // CEK TARGET
+        // =================================================
+
+        if (
+            $jumlahSoalSaatIni
+            >= $kuis->jumlah_soal
+        ) {
+
+            return redirect()
+                ->route(
+                    'soal.index',
+                    $kuis->id
+                )
+                ->with(
+                    'error',
+                    'Jumlah soal sudah mencapai target ' .
+                    $kuis->jumlah_soal .
+                    ' soal.'
+                );
+        }
+
+
+        return view(
+            'soal.create',
+            compact(
+                'kuis',
+                'jumlahSoalSaatIni'
+            )
+        );
     }
 
-    // ===============================
-    // SIMPAN SOAL
-    // ===============================
 
-    public function store(Request $request, $id)
-    {
+    // =====================================================
+    // SIMPAN SOAL
+    // =====================================================
+
+    public function store(
+        Request $request,
+        $id
+    ) {
+
+        $kuis = Kuis::findOrFail($id);
+
+
+        // =================================================
+        // HITUNG SOAL SAAT INI
+        // =================================================
+
+        $jumlahSoalSaatIni =
+            Soal::where(
+                'kuis_id',
+                $kuis->id
+            )->count();
+
+
+        // =================================================
+        // CEK TARGET SEBELUM SIMPAN
+        // =================================================
+
+        if (
+            $jumlahSoalSaatIni
+            >= $kuis->jumlah_soal
+        ) {
+
+            return redirect()
+                ->route(
+                    'soal.index',
+                    $kuis->id
+                )
+                ->with(
+                    'error',
+                    'Jumlah soal sudah mencapai target ' .
+                    $kuis->jumlah_soal .
+                    ' soal.'
+                );
+        }
+
+
+        // =================================================
+        // VALIDASI
+        // =================================================
 
         $request->validate([
 
-            'pertanyaan'    => 'required',
+            'pertanyaan' =>
+                'required|string',
 
-            'opsi_a'        => 'required',
-            'opsi_b'        => 'required',
-            'opsi_c'        => 'required',
-            'opsi_d'        => 'required',
+            'pilihan_a' =>
+                'required|string',
 
-            'jawaban_benar' => 'required',
+            'pilihan_b' =>
+                'required|string',
+
+            'pilihan_c' =>
+                'required|string',
+
+            'pilihan_d' =>
+                'required|string',
+
+            'jawaban_benar' =>
+                'required|in:A,B,C,D',
+
+            'kesulitan' =>
+                'required|in:Mudah,Sedang,Sulit',
+
+        ], [
+
+            'pertanyaan.required' =>
+                'Pertanyaan wajib diisi.',
+
+            'pilihan_a.required' =>
+                'Pilihan A wajib diisi.',
+
+            'pilihan_b.required' =>
+                'Pilihan B wajib diisi.',
+
+            'pilihan_c.required' =>
+                'Pilihan C wajib diisi.',
+
+            'pilihan_d.required' =>
+                'Pilihan D wajib diisi.',
+
+            'jawaban_benar.required' =>
+                'Jawaban benar wajib dipilih.',
+
+            'kesulitan.required' =>
+                'Tingkat kesulitan wajib dipilih.',
 
         ]);
+
+
+        // =================================================
+        // SIMPAN SOAL
+        // =================================================
 
         Soal::create([
 
-            'kuis_id'       => $id,
+            'kuis_id' =>
+                $kuis->id,
 
-            'pertanyaan'    => $request->pertanyaan,
+            'pertanyaan' =>
+                $request->pertanyaan,
 
-            'opsi_a'        => $request->opsi_a,
-            'opsi_b'        => $request->opsi_b,
-            'opsi_c'        => $request->opsi_c,
-            'opsi_d'        => $request->opsi_d,
+            'pilihan_a' =>
+                $request->pilihan_a,
 
-            'jawaban_benar' => $request->jawaban_benar,
+            'pilihan_b' =>
+                $request->pilihan_b,
 
-            'status'        => $request->status,
+            'pilihan_c' =>
+                $request->pilihan_c,
+
+            'pilihan_d' =>
+                $request->pilihan_d,
+
+            'jawaban_benar' =>
+                $request->jawaban_benar,
+
+            'kesulitan' =>
+                $request->kesulitan,
+
+            'poin' =>
+                10,
 
         ]);
 
+
+        // =================================================
+        // PENTING
+        // =================================================
+        //
+        // JANGAN UPDATE jumlah_soal DI SINI.
+        //
+        // jumlah_soal adalah TARGET.
+        //
+        // Jumlah soal yang sudah dibuat dihitung dari
+        // tabel soal.
+        //
+
+
         return redirect()
-            ->route('soal.index', $id)
-            ->with('success', 'Soal berhasil ditambahkan');
+            ->route(
+                'soal.index',
+                $kuis->id
+            )
+            ->with(
+                'success',
+                'Soal berhasil ditambahkan.'
+            );
     }
 
-    // ===============================
-    // HALAMAN EDIT SOAL
-    // ===============================
+
+    // =====================================================
+    // FORM EDIT SOAL
+    // =====================================================
 
     public function edit($id)
     {
         $soal = Soal::findOrFail($id);
 
-        return view('soal.edit', compact('soal'));
+        $kuis = Kuis::findOrFail(
+            $soal->kuis_id
+        );
+
+
+        return view(
+            'soal.edit',
+            compact(
+                'soal',
+                'kuis'
+            )
+        );
     }
 
-    // ===============================
-    // UPDATE SOAL
-    // ===============================
 
-    public function update(Request $request, $id)
-    {
+    // =====================================================
+    // UPDATE SOAL
+    // =====================================================
+
+    public function update(
+        Request $request,
+        $id
+    ) {
 
         $soal = Soal::findOrFail($id);
+
 
         $request->validate([
 
-            'pertanyaan'    => 'required',
+            'pertanyaan' =>
+                'required|string',
 
-            'opsi_a'        => 'required',
-            'opsi_b'        => 'required',
-            'opsi_c'        => 'required',
-            'opsi_d'        => 'required',
+            'pilihan_a' =>
+                'required|string',
 
-            'jawaban_benar' => 'required',
+            'pilihan_b' =>
+                'required|string',
+
+            'pilihan_c' =>
+                'required|string',
+
+            'pilihan_d' =>
+                'required|string',
+
+            'jawaban_benar' =>
+                'required|in:A,B,C,D',
+
+            'kesulitan' =>
+                'required|in:Mudah,Sedang,Sulit',
+
+        ], [
+
+            'pertanyaan.required' =>
+                'Pertanyaan wajib diisi.',
+
+            'pilihan_a.required' =>
+                'Pilihan A wajib diisi.',
+
+            'pilihan_b.required' =>
+                'Pilihan B wajib diisi.',
+
+            'pilihan_c.required' =>
+                'Pilihan C wajib diisi.',
+
+            'pilihan_d.required' =>
+                'Pilihan D wajib diisi.',
+
+            'jawaban_benar.required' =>
+                'Jawaban benar wajib dipilih.',
+
+            'kesulitan.required' =>
+                'Tingkat kesulitan wajib dipilih.',
 
         ]);
+
 
         $soal->update([
 
-            'pertanyaan'    => $request->pertanyaan,
+            'pertanyaan' =>
+                $request->pertanyaan,
 
-            'opsi_a'        => $request->opsi_a,
-            'opsi_b'        => $request->opsi_b,
-            'opsi_c'        => $request->opsi_c,
-            'opsi_d'        => $request->opsi_d,
+            'pilihan_a' =>
+                $request->pilihan_a,
 
-            'jawaban_benar' => $request->jawaban_benar,
+            'pilihan_b' =>
+                $request->pilihan_b,
 
-            'status'        => $request->status,
+            'pilihan_c' =>
+                $request->pilihan_c,
+
+            'pilihan_d' =>
+                $request->pilihan_d,
+
+            'jawaban_benar' =>
+                $request->jawaban_benar,
+
+            'kesulitan' =>
+                $request->kesulitan,
 
         ]);
 
+
         return redirect()
-            ->back()
-            ->with('success', 'Soal berhasil diupdate');
+            ->route(
+                'soal.index',
+                $soal->kuis_id
+            )
+            ->with(
+                'success',
+                'Soal berhasil diperbarui.'
+            );
     }
 
-    // ===============================
+
+    // =====================================================
     // HAPUS SOAL
-    // ===============================
+    // =====================================================
 
     public function destroy($id)
     {
-
         $soal = Soal::findOrFail($id);
 
-        $kuisId = $soal->kuis_id;
+        $kuisId =
+            $soal->kuis_id;
+
 
         $soal->delete();
 
-        return redirect()
-            ->route('soal.index', $kuisId)
-            ->with('success', 'Soal berhasil dihapus');
-    }
 
+        // =================================================
+        // JANGAN UPDATE jumlah_soal
+        // =================================================
+        //
+        // Karena jumlah_soal adalah TARGET.
+        //
+        // Setelah soal dihapus, jumlah soal aktual otomatis
+        // berkurang karena record soal sudah dihapus.
+        //
+
+
+        return redirect()
+            ->route(
+                'soal.index',
+                $kuisId
+            )
+            ->with(
+                'success',
+                'Soal berhasil dihapus.'
+            );
+    }
 }

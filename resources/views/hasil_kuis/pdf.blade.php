@@ -49,7 +49,7 @@
 
 <body>
 
-<h2>LAPORAN HASIL KUIS EDUKUM</h2>
+<h2>LAPORAN HASIL KUIS PANTUN</h2>
 
 <p>
 Tanggal Cetak :

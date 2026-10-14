@@ -2,6 +2,8 @@
 
 @section('content')
 
+<script src="https://unpkg.com/lucide@latest"></script>
+
 <style>
 
 *{
@@ -11,44 +13,52 @@
     font-family:'Poppins', sans-serif;
 }
 
+body{
+    background:#f3f4f8;
+}
+
+/* ================= CONTENT ================= */
+
 .content{
     padding:26px 22px;
 }
 
-/* ================= HEADER ================= */
+/* ================= FORM CARD ================= */
 
-.page-header{
-    margin-bottom:24px;
+.table-box{
+    border-radius:14px;
 }
-
-.header-title h1{
-    font-size:38px;
-    color:#13234a;
-    font-weight:700;
-    margin-bottom:4px;
-}
-
-.header-title p{
-    color:#6b7280;
-    font-size:14px;
-}
-
-/* ================= CARD ================= */
 
 .form-card{
+    max-width:750px;
+    margin:auto;
+    padding:25px;
     background:white;
     border-radius:18px;
-    padding:28px;
     border:1px solid #ececf2;
-    max-width:850px;
+}
+
+/* ================= HEADER ================= */
+
+.form-title{
+    color:#13234a;
+    font-size:24px;
+    font-weight:700;
+}
+
+.form-subtitle{
+    color:#6b7280;
+    font-size:13px;
+    margin-top:4px;
 }
 
 /* ================= FORM ================= */
 
-.form-grid{
+.form-row{
     display:grid;
     grid-template-columns:1fr 1fr;
     gap:20px;
+    margin-bottom:20px;
 }
 
 .form-group{
@@ -57,47 +67,204 @@
 }
 
 .form-group.full{
-    grid-column:1/3;
+    grid-column:1 / 3;
 }
 
-label{
-    font-size:13px;
-    font-weight:600;
-    color:#374151;
+.form-group label{
+    font-size:12px;
+    font-weight:700;
     margin-bottom:8px;
+    color:#374151;
 }
 
-input,
-select,
-textarea{
+.form-group input,
+.form-group select,
+.form-group textarea{
     width:100%;
-    border:1px solid #dcdfe7;
-    border-radius:12px;
-    padding:12px 14px;
-    font-size:13px;
+    border:1px solid #e5e7eb;
+    border-radius:10px;
+    padding:12px;
+    font-size:14px;
     outline:none;
-    transition:0.2s;
     background:white;
+    color:#374151;
+    transition:0.2s;
 }
 
-input:focus,
-select:focus,
-textarea:focus{
-    border-color:#2d3165;
-    box-shadow:0 0 0 3px rgba(45,49,101,.08);
+.form-group input,
+.form-group select{
+    height:44px;
 }
 
-textarea{
+.form-group textarea{
+    resize:vertical;
     min-height:120px;
-    resize:none;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus{
+    border-color:#2d3165;
+    box-shadow:0 0 0 3px rgba(45,49,101,0.08);
+}
+
+/* ================= UPLOAD ================= */
+
+.upload-box{
+    border:2px dashed #d1d5db;
+    border-radius:12px;
+    padding:22px;
+    background:#fafafa;
+    text-align:center;
+    transition:0.2s;
+}
+
+.upload-box:hover{
+    border-color:#2d3165;
+    background:#f8f9fc;
+}
+
+.upload-box i{
+    width:40px;
+    height:40px;
+    color:#2d3165;
+}
+
+.upload-box h4{
+    margin-top:10px;
+    color:#13234a;
+    font-size:14px;
+}
+
+.upload-box p{
+    color:#6b7280;
+    font-size:12px;
+    margin:8px 0 14px;
+}
+
+.upload-box input[type="file"]{
+    width:100%;
+    border:none;
+    padding:10px;
+    background:transparent;
+    font-size:13px;
+    color:#374151;
+}
+
+/* ================= FILE PREVIEW ================= */
+
+.file-preview{
+    display:none;
+    margin-top:15px;
+    padding:12px 14px;
+    background:#f1f3f8;
+    border-radius:10px;
+    text-align:left;
+}
+
+.file-preview.show{
+    display:block;
+}
+
+.file-preview-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.file-preview-icon{
+    width:36px;
+    height:36px;
+    border-radius:8px;
+    background:#e5e7eb;
+    color:#2d3165;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink:0;
+}
+
+.file-preview-icon i{
+    width:19px;
+    height:19px;
+}
+
+.file-preview-info{
+    min-width:0;
+    flex:1;
+}
+
+.file-preview-name{
+    font-size:12px;
+    font-weight:600;
+    color:#13234a;
+    word-break:break-word;
+}
+
+.file-preview-size{
+    margin-top:3px;
+    font-size:11px;
+    color:#6b7280;
+}
+
+.file-preview-type{
+    margin-top:2px;
+    font-size:11px;
+    color:#2d3165;
+    font-weight:600;
+}
+
+/* ================= CURRENT FILE ================= */
+
+.current-file{
+    margin-top:12px;
+    padding:12px 14px;
+    background:#f1f3f8;
+    border-radius:10px;
+    text-align:left;
+}
+
+.current-file-title{
+    font-size:11px;
+    color:#6b7280;
+    margin-bottom:5px;
+}
+
+.current-file-name{
+    font-size:12px;
+    font-weight:600;
+    color:#13234a;
+    word-break:break-word;
+}
+
+.current-file a{
+    display:inline-block;
+    margin-top:5px;
+    font-size:11px;
+    color:#2d3165;
+    font-weight:600;
+    text-decoration:none;
+}
+
+.current-file a:hover{
+    text-decoration:underline;
+}
+
+/* ================= ERROR ================= */
+
+.error-message{
+    color:#dc2626;
+    font-size:11px;
+    margin-top:5px;
 }
 
 /* ================= BUTTON ================= */
 
 .form-action{
-    margin-top:24px;
+    margin-top:25px;
     display:flex;
-    gap:12px;
+    justify-content:flex-end;
+    gap:10px;
 }
 
 .btn{
@@ -110,13 +277,20 @@ textarea{
     cursor:pointer;
     display:flex;
     align-items:center;
+    justify-content:center;
     gap:8px;
     transition:0.2s;
+}
+
+.btn i{
+    width:16px;
+    height:16px;
 }
 
 .btn-primary{
     background:#2d3165;
     color:white;
+    box-shadow:0 4px 10px rgba(45,49,101,0.15);
 }
 
 .btn-primary:hover{
@@ -126,216 +300,655 @@ textarea{
 .btn-secondary{
     background:#eef0f5;
     color:#374151;
+    text-decoration:none;
 }
 
 .btn-secondary:hover{
-    background:#e3e6ed;
-}
-
-.btn i{
-    width:16px;
-    height:16px;
+    background:#e4e7ef;
 }
 
 /* ================= RESPONSIVE ================= */
 
-@media(max-width:768px){
+@media(max-width:900px){
 
-    .form-grid{
+    .form-row{
         grid-template-columns:1fr;
+        gap:20px;
     }
 
     .form-group.full{
         grid-column:auto;
     }
 
+    .form-card{
+        padding:22px;
+    }
 }
 
 </style>
 
-<div class="content">
 
-    <!-- HEADER -->
-    <div class="page-header">
+<!-- ================= FORM CARD ================= -->
 
-        <div class="header-title">
-            <h1>Edit Materi</h1>
-            <p>Perbarui data materi literasi hukum</p>
+<div class="table-box form-card">
+
+    <!-- ================= HEADER ================= -->
+
+    <div style="margin-bottom:25px;">
+
+        <h2 class="form-title">
+            Edit Materi
+        </h2>
+
+        <p class="form-subtitle">
+            Perbarui informasi materi literasi hukum
+        </p>
+
+    </div>
+
+
+    <!-- ================= FORM ================= -->
+
+    <form
+        action="{{ route('materi.update', $materi->id) }}"
+        method="POST"
+        enctype="multipart/form-data"
+    >
+
+        @csrf
+        @method('PUT')
+
+
+        <!-- ================= JUDUL & KATEGORI ================= -->
+
+        <div class="form-row">
+
+            <!-- JUDUL -->
+
+            <div class="form-group">
+
+                <label>
+                    JUDUL MATERI
+                </label>
+
+                <input
+                    type="text"
+                    name="judul"
+                    value="{{ old('judul', $materi->judul) }}"
+                    placeholder="Contoh: Kesadaran Hukum Sejak Dini"
+                    required
+                >
+
+                @error('judul')
+
+                    <span class="error-message">
+                        {{ $message }}
+                    </span>
+
+                @enderror
+
+            </div>
+
+
+            <!-- KATEGORI -->
+
+            <div class="form-group">
+
+                <label>
+                    KATEGORI
+                </label>
+
+                <select
+                    name="kategori_id"
+                    required
+                >
+
+                    <option value="">
+                        Pilih Kategori
+                    </option>
+
+                    @foreach($kategoris as $kategori)
+
+                        <option
+                            value="{{ $kategori->id }}"
+                            {{ old('kategori_id', $materi->kategori_id) == $kategori->id ? 'selected' : '' }}
+                        >
+                            {{ $kategori->nama_kategori }}
+                        </option>
+
+                    @endforeach
+
+                </select>
+
+                @error('kategori_id')
+
+                    <span class="error-message">
+                        {{ $message }}
+                    </span>
+
+                @enderror
+
+            </div>
+
         </div>
 
-    </div>
 
-    <!-- FORM -->
-    <div class="form-card">
+        <!-- ================= PENULIS ================= -->
 
-        <form action="{{ route('materi.update', $materi->id) }}" method="POST">
+        <div class="form-row">
 
-            @csrf
-            @method('PUT')
+            <div class="form-group">
 
-            <div class="form-grid">
+                <label>
+                    PENULIS
+                </label>
 
-                <!-- JUDUL -->
-                <div class="form-group full">
+                <input
+                    type="text"
+                    name="penulis"
+                    value="{{ old('penulis', $materi->penulis) }}"
+                    placeholder="Nama Penulis"
+                >
 
-                    <label>Judul Materi</label>
+                @error('penulis')
 
-                    <input
-                        type="text"
-                        name="judul"
-                        value="{{ $materi->judul }}"
-                        placeholder="Masukkan judul materi"
-                        required>
+                    <span class="error-message">
+                        {{ $message }}
+                    </span>
 
-                </div>
-
-                <!-- DESKRIPSI -->
-                <div class="form-group full">
-
-                    <label>Deskripsi</label>
-
-                    <textarea
-                        name="deskripsi"
-                        placeholder="Masukkan deskripsi materi">{{ $materi->deskripsi }}</textarea>
-
-                </div>
-
-                <!-- KATEGORI -->
-                <div class="form-group">
-
-                    <label>Kategori</label>
-
-                    <select name="kategori" required>
-
-                        <option value="Bullying"
-                            {{ $materi->kategori == 'Bullying' ? 'selected' : '' }}>
-                            Bullying
-                        </option>
-
-                        <option value="Narkoba"
-                            {{ $materi->kategori == 'Narkoba' ? 'selected' : '' }}>
-                            Narkoba
-                        </option>
-
-                        <option value="Cyber Crime"
-                            {{ $materi->kategori == 'Cyber Crime' ? 'selected' : '' }}>
-                            Cyber Crime
-                        </option>
-
-                        <option value="Kenakalan Remaja"
-                            {{ $materi->kategori == 'Kenakalan Remaja' ? 'selected' : '' }}>
-                            Kenakalan Remaja
-                        </option>
-
-                    </select>
-
-                </div>
-
-                <!-- TIPE -->
-                <div class="form-group">
-
-                    <label>Tipe Materi</label>
-
-                    <select name="tipe" required>
-
-                        <option value="PDF"
-                            {{ $materi->tipe == 'PDF' ? 'selected' : '' }}>
-                            PDF
-                        </option>
-
-                        <option value="Video"
-                            {{ $materi->tipe == 'Video' ? 'selected' : '' }}>
-                            Video
-                        </option>
-
-                        <option value="Artikel"
-                            {{ $materi->tipe == 'Artikel' ? 'selected' : '' }}>
-                            Artikel
-                        </option>
-
-                        <option value="PPT"
-                            {{ $materi->tipe == 'PPT' ? 'selected' : '' }}>
-                            PPT
-                        </option>
-
-                        <option value="Gambar"
-                            {{ $materi->tipe == 'Gambar' ? 'selected' : '' }}>
-                            Gambar
-                        </option>
-
-                    </select>
-
-                </div>
-
-                <!-- PENULIS -->
-                <div class="form-group">
-
-                    <label>Penulis</label>
-
-                    <input
-                        type="text"
-                        name="penulis"
-                        value="{{ $materi->penulis }}"
-                        placeholder="Masukkan nama penulis"
-                        required>
-
-                </div>
-
-                <!-- STATUS -->
-                <div class="form-group">
-
-                    <label>Status</label>
-
-                    <select name="status">
-
-                        <option value="Diterbitkan"
-                            {{ $materi->status == 'Diterbitkan' ? 'selected' : '' }}>
-                            Diterbitkan
-                        </option>
-
-                        <option value="Draft"
-                            {{ $materi->status == 'Draft' ? 'selected' : '' }}>
-                            Draft
-                        </option>
-
-                    </select>
-
-                </div>
+                @enderror
 
             </div>
 
-            <!-- BUTTON -->
-            <div class="form-action">
+        </div>
 
-                <button type="submit" class="btn btn-primary">
 
-                    <i data-lucide="save"></i>
-                    Simpan Perubahan
+        <!-- ================= TIPE MATERI ================= -->
 
-                </button>
+        <div class="form-group" style="margin-bottom:20px;">
 
-                <a href="{{ route('materi.index') }}"
-                   style="text-decoration:none;">
+            <label>
+                TIPE MATERI
+            </label>
 
-                    <button type="button" class="btn btn-secondary">
+            <input
+                type="text"
+                id="tipe_display"
+                value="{{ old('tipe', $materi->tipe) }}"
+                readonly
+                style="background:#f7f8fb; color:#6b7280;"
+            >
 
-                        <i data-lucide="arrow-left"></i>
-                        Kembali
+            <!--
+                Nilai tipe yang dikirim ke controller.
+                Jika user memilih file baru, JavaScript
+                akan mengubah nilai ini secara otomatis.
+            -->
 
-                    </button>
+            <input
+                type="hidden"
+                name="tipe"
+                id="tipe"
+                value="{{ old('tipe', $materi->tipe) }}"
+            >
 
-                </a>
+            @error('tipe')
+
+                <span class="error-message">
+                    {{ $message }}
+                </span>
+
+            @enderror
+
+        </div>
+
+
+        <!-- ================= UPLOAD MATERI ================= -->
+
+        <div class="form-group">
+
+            <label>
+                GANTI FILE MATERI
+            </label>
+
+            <div class="upload-box">
+
+                <i data-lucide="upload-cloud"></i>
+
+                <h4>
+                    Pilih file materi baru
+                </h4>
+
+                <p>
+                    PDF, PPT, PPTX, JPG, PNG, MP4, AVI, MOV, MKV, WEBM
+                </p>
+
+
+                <!-- FILE INPUT -->
+
+                <input
+                    type="file"
+                    name="file"
+                    id="file"
+                    accept=".pdf,.ppt,.pptx,.jpg,.jpeg,.jfif,.png,.mp4,.avi,.mov,.mkv,.webm"
+                >
+
+
+                <!-- ================= FILE PREVIEW ================= -->
+
+                <div
+                    id="file-preview"
+                    class="file-preview"
+                >
+
+                    <div class="file-preview-row">
+
+                        <div
+                            class="file-preview-icon"
+                            id="file-preview-icon"
+                        >
+
+                            <i data-lucide="file"></i>
+
+                        </div>
+
+
+                        <div class="file-preview-info">
+
+                            <div
+                                id="file-preview-name"
+                                class="file-preview-name"
+                            ></div>
+
+                            <div
+                                id="file-preview-size"
+                                class="file-preview-size"
+                            ></div>
+
+                            <div
+                                id="file-preview-type"
+                                class="file-preview-type"
+                            ></div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ================= FILE SAAT INI ================= -->
+
+                @if($materi->file)
+
+                    <div class="current-file">
+
+                        <div class="current-file-title">
+                            File saat ini:
+                        </div>
+
+                        <div class="current-file-name">
+                            {{ basename($materi->file) }}
+                        </div>
+
+                        <a
+                            href="{{ asset('storage/' . $materi->file) }}"
+                            target="_blank"
+                        >
+                            Lihat File Materi
+                        </a>
+
+                    </div>
+
+                @else
+
+                    <div class="current-file">
+
+                        <div class="current-file-title">
+                            File saat ini:
+                        </div>
+
+                        <div class="current-file-name">
+                            Belum ada file.
+                        </div>
+
+                    </div>
+
+                @endif
+
+
+                @error('file')
+
+                    <span class="error-message">
+                        {{ $message }}
+                    </span>
+
+                @enderror
 
             </div>
 
-        </form>
+        </div>
 
-    </div>
+
+        <!-- ================= DESKRIPSI ================= -->
+
+        <div
+            class="form-group"
+            style="margin-top:20px;"
+        >
+
+            <label>
+                DESKRIPSI
+            </label>
+
+            <textarea
+                rows="5"
+                name="deskripsi"
+                placeholder="Tuliskan ringkasan materi atau petunjuk penggunaan..."
+            >{{ old('deskripsi', $materi->deskripsi) }}</textarea>
+
+            @error('deskripsi')
+
+                <span class="error-message">
+                    {{ $message }}
+                </span>
+
+            @enderror
+
+        </div>
+
+
+        <!-- ================= STATUS ================= -->
+
+        <div
+            class="form-group"
+            style="margin-top:20px;"
+        >
+
+            <label>
+                STATUS
+            </label>
+
+            <select
+                name="status"
+                required
+            >
+
+                <option
+                    value="Diterbitkan"
+                    {{ old('status', $materi->status) == 'Diterbitkan' ? 'selected' : '' }}
+                >
+                    Diterbitkan
+                </option>
+
+                <option
+                    value="Draft"
+                    {{ old('status', $materi->status) == 'Draft' ? 'selected' : '' }}
+                >
+                    Draft
+                </option>
+
+            </select>
+
+            @error('status')
+
+                <span class="error-message">
+                    {{ $message }}
+                </span>
+
+            @enderror
+
+        </div>
+
+
+        <!-- ================= BUTTON ================= -->
+
+        <div class="form-action">
+
+            <a
+                href="{{ route('materi.index') }}"
+                class="btn btn-secondary"
+            >
+
+                <i data-lucide="arrow-left"></i>
+
+                Kembali
+
+            </a>
+
+
+            <button
+                type="submit"
+                class="btn btn-primary"
+            >
+
+                <i data-lucide="save"></i>
+
+                Simpan Perubahan
+
+            </button>
+
+        </div>
+
+    </form>
 
 </div>
 
+
 <script>
+
+/* ================= LUCIDE ================= */
+
 lucide.createIcons();
+
+
+/* ================= FILE ELEMENT ================= */
+
+const fileInput =
+    document.getElementById('file');
+
+const filePreview =
+    document.getElementById('file-preview');
+
+const filePreviewName =
+    document.getElementById('file-preview-name');
+
+const filePreviewSize =
+    document.getElementById('file-preview-size');
+
+const filePreviewType =
+    document.getElementById('file-preview-type');
+
+const filePreviewIcon =
+    document.getElementById('file-preview-icon');
+
+const tipeInput =
+    document.getElementById('tipe');
+
+const tipeDisplay =
+    document.getElementById('tipe_display');
+
+
+/* ================= FORMAT UKURAN ================= */
+
+function formatFileSize(bytes){
+
+    if(bytes === 0){
+        return '0 Bytes';
+    }
+
+    const units = [
+        'Bytes',
+        'KB',
+        'MB',
+        'GB'
+    ];
+
+    const i = Math.floor(
+        Math.log(bytes) / Math.log(1024)
+    );
+
+    const size =
+        bytes / Math.pow(1024, i);
+
+    return size.toFixed(2) + ' ' + units[i];
+}
+
+
+/* ================= TENTUKAN TIPE ================= */
+
+function getFileType(extension){
+
+    extension =
+        extension.toLowerCase();
+
+    if(extension === 'pdf'){
+        return 'PDF';
+    }
+
+    if(
+        extension === 'ppt' ||
+        extension === 'pptx'
+    ){
+        return 'PPT';
+    }
+
+    if(
+        extension === 'mp4' ||
+        extension === 'avi' ||
+        extension === 'mov' ||
+        extension === 'mkv' ||
+        extension === 'webm'
+    ){
+        return 'Video';
+    }
+
+    if(
+        extension === 'jpg' ||
+        extension === 'jpeg' ||
+        extension === 'jfif'
+    ){
+        return 'JPG';
+    }
+
+    if(extension === 'png'){
+        return 'PNG';
+    }
+
+    return 'Artikel';
+}
+
+
+/* ================= ICON ================= */
+
+function getFileIcon(type){
+
+    if(type === 'PDF'){
+        return 'file-text';
+    }
+
+    if(type === 'PPT'){
+        return 'presentation';
+    }
+
+    if(type === 'Video'){
+        return 'play-circle';
+    }
+
+    if(
+        type === 'JPG' ||
+        type === 'PNG'
+    ){
+        return 'image';
+    }
+
+    return 'file';
+}
+
+
+/* ================= FILE CHANGE ================= */
+
+if(fileInput){
+
+    fileInput.addEventListener(
+        'change',
+        function(){
+
+            if(this.files.length === 0){
+
+                filePreview.classList.remove('show');
+
+                return;
+            }
+
+
+            const file =
+                this.files[0];
+
+
+            /* ================= NAMA FILE ================= */
+
+            filePreviewName.textContent =
+                file.name;
+
+
+            /* ================= UKURAN ================= */
+
+            filePreviewSize.textContent =
+                'Ukuran: ' +
+                formatFileSize(file.size);
+
+
+            /* ================= EXTENSION ================= */
+
+            const extension =
+                file.name
+                    .split('.')
+                    .pop()
+                    .toLowerCase();
+
+
+            /* ================= TIPE ================= */
+
+            const type =
+                getFileType(extension);
+
+
+            filePreviewType.textContent =
+                'Tipe: ' + type;
+
+
+            /* ================= UPDATE TIPE ================= */
+
+            tipeInput.value =
+                type;
+
+            tipeDisplay.value =
+                type;
+
+
+            /* ================= ICON ================= */
+
+            filePreviewIcon.innerHTML =
+                '<i data-lucide="' +
+                getFileIcon(type) +
+                '"></i>';
+
+
+            /* ================= SHOW PREVIEW ================= */
+
+            filePreview.classList.add('show');
+
+
+            /* ================= RENDER LUCIDE ================= */
+
+            lucide.createIcons();
+
+        }
+    );
+
+}
+
 </script>
 
 @endsection

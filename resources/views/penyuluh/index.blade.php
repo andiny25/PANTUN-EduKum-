@@ -2,7 +2,16 @@
 
 @section('content')
 
+<script src="https://unpkg.com/lucide@latest"></script>
+
 <style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins', sans-serif;
+}
 
 .content{
     padding:28px;
@@ -24,7 +33,7 @@
 }
 
 .header-title h1{
-    font-size:42px;
+    font-size:40px;
     font-weight:700;
     color:#13234a;
     margin-bottom:4px;
@@ -33,6 +42,48 @@
 .header-title p{
     color:#6b7280;
     font-size:15px;
+}
+
+/* ================= NOTIFICATION ================= */
+
+.alert-success{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    background:#dcfce7;
+    color:#166534;
+    border:1px solid #bbf7d0;
+    border-radius:10px;
+    padding:12px 15px;
+    margin-bottom:18px;
+    font-size:13px;
+    font-weight:500;
+}
+
+.alert-success > i{
+    width:18px;
+    height:18px;
+    flex-shrink:0;
+}
+
+.alert-success span{
+    flex:1;
+}
+
+.alert-success button{
+    border:none;
+    background:transparent;
+    color:#166534;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:3px;
+}
+
+.alert-success button i{
+    width:16px;
+    height:16px;
 }
 
 /* ================= BUTTON ================= */
@@ -51,6 +102,11 @@
     font-weight:600;
     cursor:pointer;
     box-shadow:0 4px 10px rgba(8,27,68,0.18);
+    text-decoration:none;
+}
+
+.btn:hover{
+    background:#061532;
 }
 
 .btn i{
@@ -127,11 +183,28 @@ td{
     gap:12px;
 }
 
-.penyuluh-wrap img{
+.penyuluh-photo{
     width:42px;
     height:42px;
     border-radius:50%;
     object-fit:cover;
+    flex-shrink:0;
+    display:block;
+}
+
+.penyuluh-initial{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    background:#e8ebf7;
+    color:#2d3165;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:14px;
+    font-weight:700;
+    flex-shrink:0;
+    text-transform:uppercase;
 }
 
 .penyuluh-name{
@@ -166,6 +239,11 @@ td{
     color:#16a34a;
 }
 
+.pending{
+    background:#fef3c7;
+    color:#d97706;
+}
+
 .nonaktif{
     background:#fee2e2;
     color:#dc2626;
@@ -181,6 +259,24 @@ td{
 
 .action a{
     text-decoration:none;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.action form{
+    margin:0;
+    padding:0;
+}
+
+.action button{
+    border:none;
+    background:none;
+    padding:0;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
 }
 
 .action i{
@@ -189,8 +285,16 @@ td{
     color:#444;
 }
 
+.action a:hover i{
+    color:#2563eb;
+}
+
 .delete{
     color:#dc2626 !important;
+}
+
+.action button:hover .delete{
+    color:#b91c1c !important;
 }
 
 /* ================= PAGINATION ================= */
@@ -233,6 +337,32 @@ td{
     border:none;
 }
 
+/* ================= EMPTY ================= */
+
+.empty-data{
+    text-align:center;
+    padding:40px 20px;
+    color:#6b7280;
+}
+
+.empty-data i{
+    width:40px;
+    height:40px;
+    margin-bottom:10px;
+    color:#9ca3af;
+}
+
+.empty-data h3{
+    font-size:14px;
+    color:#374151;
+    margin-bottom:5px;
+}
+
+.empty-data p{
+    font-size:12px;
+    color:#9ca3af;
+}
+
 /* ================= RESPONSIVE ================= */
 
 @media(max-width:900px){
@@ -260,228 +390,391 @@ td{
 
 </style>
 
-<div class="content">
 
-    <!-- HEADER -->
-    <div class="page-header">
+<!-- ================= HEADER ================= -->
 
-        <div class="header-top">
+<div class="page-header">
 
-            <div class="header-title">
-                <h1>Daftar Penyuluh</h1>
-                <p>Kelola data penyuluh hukum yang terdaftar dalam sistem EduKum.</p>
-            </div>
+    <div class="header-top">
 
-            <a href="{{ route('penyuluh.create') }}"
-               style="text-decoration:none;">
+        <div class="header-title">
 
-                <button class="btn">
+            <h1>Daftar Penyuluh</h1>
 
-                    <i data-lucide="plus"></i>
-                    Tambah Penyuluh
-
-                </button>
-
-            </a>
+            <p>
+                Kelola data penyuluh hukum yang terdaftar dalam sistem EduKum.
+            </p>
 
         </div>
 
-    </div>
+        <a
+            href="{{ route('penyuluh.create') }}"
+            class="btn"
+        >
 
-    <!-- FILTER -->
-    <div class="filter-section">
+            <i data-lucide="plus"></i>
 
-        <div class="filters">
+            Tambah Penyuluh
 
-            <select class="filter-select">
-                <option>Semua Status</option>
-            </select>
-
-            <select class="filter-select">
-                <option>Semua Instansi</option>
-            </select>
-
-        </div>
+        </a>
 
     </div>
 
-    <!-- TABLE -->
-    <div class="table-box">
+</div>
 
-        <table>
 
-            <thead>
+<!-- ================= NOTIFICATION ================= -->
 
-                <tr>
+@if(session('success'))
 
-                    <th>PENYULUH</th>
-                    <th>EMAIL</th>
-                    <th>NO HP</th>
-                    <th>JABATAN</th>
-                    <th>INSTANSI</th>
-                    <th>STATUS</th>
-                    <th>BERGABUNG</th>
-                    <th>AKSI</th>
+    <div class="alert-success">
 
-                </tr>
+        <i data-lucide="check-circle"></i>
 
-            </thead>
+        <span>
+            {{ session('success') }}
+        </span>
 
-            <tbody>
+        <button
+            type="button"
+            onclick="this.parentElement.remove()"
+            title="Tutup"
+        >
 
-            @forelse($penyuluh as $item)
+            <i data-lucide="x"></i>
 
-                <tr>
+        </button>
 
-                    <!-- PENYULUH -->
-                    <td>
+    </div>
 
-                        <div class="penyuluh-wrap">
+@endif
 
-                            <img src="https://i.pravatar.cc/100?img={{ $item->id }}">
 
-                            <div>
+<!-- ================= FILTER ================= -->
 
-                                <div class="penyuluh-name">
-                                    {{ $item->nama }}
-                                </div>
+<div class="filter-section">
+
+    <div class="filters">
+
+        <select class="filter-select">
+
+            <option value="">
+                Semua Status
+            </option>
+
+            <option value="Aktif">
+                Aktif
+            </option>
+
+            <option value="Pending">
+                Pending
+            </option>
+
+            <option value="Nonaktif">
+                Nonaktif
+            </option>
+
+        </select>
+
+    </div>
+
+</div>
+
+
+<!-- ================= TABLE ================= -->
+
+<div class="table-box">
+
+    <table>
+
+        <thead>
+
+            <tr>
+
+                <th>PENYULUH</th>
+                <th>EMAIL</th>
+                <th>NO HP</th>
+                <th>JABATAN</th>
+                <th>INSTANSI</th>
+                <th>STATUS</th>
+                <th>BERGABUNG</th>
+                <th>AKSI</th>
+
+            </tr>
+
+        </thead>
+
+
+        <tbody>
+
+        @forelse($penyuluh as $item)
+
+            <tr>
+
+                <!-- ================= PENYULUH ================= -->
+
+                <td>
+
+                    <div class="penyuluh-wrap">
+
+                        @php
+
+                            /*
+                            |--------------------------------------------------------------------------
+                            | Cari User berdasarkan email penyuluh
+                            |--------------------------------------------------------------------------
+                            */
+
+                            $emailPenyuluh = strtolower(
+                                trim($item->email ?? '')
+                            );
+
+                            $user = $users->get($emailPenyuluh);
+
+                        @endphp
+
+
+                        <!-- ================= FOTO GOOGLE ================= -->
+
+                        @if($user && !empty($user->avatar))
+
+                            <img
+                                src="{{ $user->avatar }}"
+                                alt="Foto {{ $item->nama }}"
+                                class="penyuluh-photo"
+                                referrerpolicy="no-referrer"
+                            >
+
+                        @else
+
+                            <!-- ================= INITIAL ================= -->
+
+                            @php
+
+                                $nama = trim(
+                                    $item->nama ?? ''
+                                );
+
+                                $initial = strtoupper(
+                                    substr($nama, 0, 1)
+                                );
+
+                            @endphp
+
+                            <div class="penyuluh-initial">
+
+                                {{ $initial ?: '?' }}
+
+                            </div>
+
+                        @endif
+
+
+                        <!-- ================= NAMA ================= -->
+
+                        <div>
+
+                            <div class="penyuluh-name">
+
+                                {{ $item->nama }}
 
                             </div>
 
                         </div>
 
-                    </td>
+                    </div>
 
-                    <!-- EMAIL -->
-                    <td>
+                </td>
 
-                        <div class="text-muted">
-                            {{ $item->email }}
-                        </div>
 
-                    </td>
+                <!-- ================= EMAIL ================= -->
 
-                    <!-- NO HP -->
-                    <td>
+                <td>
 
-                        <div class="text-muted">
-                            {{ $item->no_hp ?? '-' }}
-                        </div>
+                    <div class="text-muted">
 
-                    </td>
+                        {{ $item->email }}
 
-                    <!-- JABATAN -->
-                    <td>
+                    </div>
 
-                        <div class="text-muted">
-                            {{ $item->jabatan }}
-                        </div>
+                </td>
 
-                    </td>
 
-                    <!-- INSTANSI -->
-                    <td>
+                <!-- ================= NO HP ================= -->
 
-                        <div class="text-muted">
-                            {{ $item->instansi }}
-                        </div>
+                <td>
 
-                    </td>
+                    <div class="text-muted">
 
-                    <!-- STATUS -->
-                    <td>
+                        {{ $item->no_hp ?? '-' }}
 
-                        @if($item->status == 'Aktif')
+                    </div>
 
-                            <span class="badge aktif">
-                                Aktif
-                            </span>
+                </td>
 
-                        @else
 
-                            <span class="badge nonaktif">
-                                Nonaktif
-                            </span>
+                <!-- ================= JABATAN ================= -->
 
-                        @endif
+                <td>
 
-                    </td>
+                    <div class="text-muted">
 
-                    <!-- BERGABUNG -->
-                    <td>
+                        {{ $item->jabatan ?? '-' }}
 
-                        <div class="text-muted">
-                            {{ $item->created_at ? $item->created_at->format('d M Y') : '-' }}
-                        </div>
+                    </div>
 
-                    </td>
+                </td>
 
-                    <!-- AKSI -->
-                    <td>
 
-                        <div class="action">
+                <!-- ================= INSTANSI ================= -->
 
-                            <!-- EDIT -->
-                            <a href="{{ route('penyuluh.edit',$item->id) }}">
+                <td>
 
-                                <i data-lucide="pencil"></i>
+                    <div class="text-muted">
 
-                            </a>
+                        {{ $item->instansi ?? '-' }}
 
-                            <!-- DELETE -->
-                            <form action="{{ route('penyuluh.destroy',$item->id) }}"
-                                  method="POST"
-                                  onsubmit="return confirm('Yakin ingin menghapus penyuluh ini?')">
+                    </div>
 
-                                @csrf
-                                @method('DELETE')
+                </td>
 
-                                <button type="submit"
-                                        style="border:none;background:none;padding:0;cursor:pointer;">
 
-                                    <i data-lucide="trash-2"
-                                       class="delete"></i>
+                <!-- ================= STATUS ================= -->
 
-                                </button>
+                <td>
 
-                            </form>
+                    @if($item->status == 'Aktif')
 
-                        </div>
+                        <span class="badge aktif">
+                            Aktif
+                        </span>
 
-                    </td>
+                    @elseif($item->status == 'Pending')
 
-                </tr>
+                        <span class="badge pending">
+                            Pending
+                        </span>
 
-            @empty
+                    @else
 
-                <tr>
+                        <span class="badge nonaktif">
+                            Nonaktif
+                        </span>
 
-                    <td colspan="8"
-                        style="text-align:center;padding:30px;">
+                    @endif
 
-                        Belum ada data penyuluh
+                </td>
 
-                    </td>
 
-                </tr>
+                <!-- ================= BERGABUNG ================= -->
 
-            @endforelse
+                <td>
 
-            </tbody>
+                    <div class="text-muted">
 
-        </table>
+                        {{ $item->created_at
+                            ? $item->created_at->format('d M Y')
+                            : '-'
+                        }}
 
-        <!-- PAGINATION -->
-        <div class="pagination">
+                    </div>
 
-            <span>
-                Menampilkan {{ count($penyuluh) }} penyuluh
-            </span>
+                </td>
 
-            <div class="page-number">
 
-                <div class="page active">1</div>
+                <!-- ================= AKSI ================= -->
 
+                <td>
+
+                    <div class="action">
+
+                        <!-- EDIT -->
+
+                        <a
+                            href="{{ route('penyuluh.edit', $item->id) }}"
+                            title="Edit Penyuluh"
+                        >
+
+                            <i data-lucide="pencil"></i>
+
+                        </a>
+
+
+                        <!-- DELETE -->
+
+                        <form
+                            action="{{ route('penyuluh.destroy', $item->id) }}"
+                            method="POST"
+                            onsubmit="return confirm('Yakin ingin menghapus data penyuluh ini?')"
+                        >
+
+                            @csrf
+
+                            @method('DELETE')
+
+                            <button
+                                type="submit"
+                                title="Hapus Penyuluh"
+                            >
+
+                                <i
+                                    data-lucide="trash-2"
+                                    class="delete"
+                                ></i>
+
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </td>
+
+            </tr>
+
+        @empty
+
+            <tr>
+
+                <td colspan="8">
+
+                    <div class="empty-data">
+
+                        <i data-lucide="users"></i>
+
+                        <h3>
+                            Belum Ada Data Penyuluh
+                        </h3>
+
+                        <p>
+                            Belum ada penyuluh hukum yang ditambahkan ke sistem.
+                        </p>
+
+                    </div>
+
+                </td>
+
+            </tr>
+
+        @endforelse
+
+        </tbody>
+
+    </table>
+
+
+    <!-- ================= PAGINATION ================= -->
+
+    <div class="pagination">
+
+        <span>
+            Menampilkan {{ $penyuluh->count() }} penyuluh
+        </span>
+
+        <div class="page-number">
+
+            <div class="page active">
+                1
             </div>
 
         </div>
@@ -490,8 +783,11 @@ td{
 
 </div>
 
+
 <script>
+
 lucide.createIcons();
+
 </script>
 
 @endsection

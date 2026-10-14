@@ -8,125 +8,136 @@ use Illuminate\Support\Facades\Storage;
 
 class PaketPenyuluhanController extends Controller
 {
-    /**
-     * Menampilkan daftar paket penyuluhan.
-     */
+    /*
+    |--------------------------------------------------------------------------
+    | DAFTAR PAKET
+    |--------------------------------------------------------------------------
+    */
+
     public function index()
     {
-        $paket = PaketPenyuluhan::latest()->paginate(8);
+        $paket = PaketPenyuluhan::with([
+            'kategori',
+            'materi',
+            'kuis',
+            'coverMateri'
+        ])
+        ->latest()
+        ->paginate(8);
 
-        return view('paket_penyuluhan.index', compact('paket'));
+        return view(
+            'paket_penyuluhan.index',
+            compact('paket')
+        );
     }
 
-    /**
-     * Form tambah paket.
-     */
-    public function create()
-    {
-        return view('paket_penyuluhan.create');
-    }
 
-    /**
-     * Simpan paket baru.
-     */
-    public function store(Request $request)
-    {
+    /*
+    |--------------------------------------------------------------------------
+    | UPDATE COVER MANUAL
+    |--------------------------------------------------------------------------
+    */
+
+    public function update(
+        Request $request,
+        PaketPenyuluhan $paket_penyuluhan
+    ) {
         $request->validate([
-            'judul' => 'required|string|max:255',
-            'kategori' => 'required|string|max:100',
-            'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-            'deskripsi' => 'nullable|string',
+            'thumbnail' =>
+                'required|image|mimes:jpg,jpeg,jfif,png,webp|max:2048',
         ]);
 
-        $thumbnail = null;
+        $thumbnailLama =
+            $paket_penyuluhan->thumbnail;
 
-        if ($request->hasFile('thumbnail')) {
-            $thumbnail = $request->file('thumbnail')->store('paket', 'public');
-        }
+        $thumbnailBaru =
+            $request
+                ->file('thumbnail')
+                ->store(
+                    'paket',
+                    'public'
+                );
 
-        PaketPenyuluhan::create([
-            'judul' => $request->judul,
-            'kategori' => $request->kategori,
-            'thumbnail' => $thumbnail,
-            'deskripsi' => $request->deskripsi,
-            'jumlah_halaman' => 8,
-            'views' => 0,
-        ]);
-
-        return redirect()
-            ->route('paket-penyuluhan.index')
-            ->with('success', 'Paket penyuluhan berhasil ditambahkan.');
-    }
-
-    /**
-     * Detail paket.
-     */
-    public function show(PaketPenyuluhan $paket_penyuluhan)
-    {
-        return view('paket_penyuluhan.show', compact('paket_penyuluhan'));
-    }
-
-    /**
-     * Form edit paket.
-     */
-    public function edit(PaketPenyuluhan $paket_penyuluhan)
-    {
-        return view('paket_penyuluhan.edit', [
-            'paket' => $paket_penyuluhan
-        ]);
-    }
-
-    /**
-     * Update paket.
-     */
-    public function update(Request $request, PaketPenyuluhan $paket_penyuluhan)
-    {
-        $request->validate([
-            'judul' => 'required|string|max:255',
-            'kategori' => 'required|string|max:100',
-            'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-            'deskripsi' => 'nullable|string',
-        ]);
-
-        $thumbnail = $paket_penyuluhan->thumbnail;
-
-        if ($request->hasFile('thumbnail')) {
-
-            if ($thumbnail && Storage::disk('public')->exists($thumbnail)) {
-                Storage::disk('public')->delete($thumbnail);
-            }
-
-            $thumbnail = $request->file('thumbnail')->store('paket', 'public');
+        if (
+            $thumbnailLama &&
+            Storage::disk('public')->exists(
+                $thumbnailLama
+            )
+        ) {
+            Storage::disk('public')->delete(
+                $thumbnailLama
+            );
         }
 
         $paket_penyuluhan->update([
-            'judul' => $request->judul,
-            'kategori' => $request->kategori,
-            'thumbnail' => $thumbnail,
-            'deskripsi' => $request->deskripsi,
+            'thumbnail' => $thumbnailBaru,
         ]);
 
         return redirect()
-            ->route('paket-penyuluhan.index')
-            ->with('success', 'Paket penyuluhan berhasil diperbarui.');
+            ->route(
+                'paket-penyuluhan.index'
+            )
+            ->with(
+                'success',
+                'Cover paket berhasil diperbarui.'
+            );
     }
 
-    /**
-     * Hapus paket.
-     */
-    public function destroy(PaketPenyuluhan $paket_penyuluhan)
+
+    /*
+    |--------------------------------------------------------------------------
+    | DETAIL
+    |--------------------------------------------------------------------------
+    */
+
+    public function show($id)
     {
+        $paket = PaketPenyuluhan::with([
+            'kategori',
+            'materi',
+            'kuis',
+            'coverMateri'
+        ])
+        ->findOrFail($id);
+
+        return view(
+            'paket_penyuluhan.show',
+            compact('paket')
+        );
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | DELETE
+    |--------------------------------------------------------------------------
+    */
+
+    public function destroy($id)
+    {
+        $paket =
+            PaketPenyuluhan::findOrFail($id);
+
         if (
-            $paket_penyuluhan->thumbnail &&
-            Storage::disk('public')->exists($paket_penyuluhan->thumbnail)
+            $paket->thumbnail &&
+            Storage::disk('public')->exists(
+                $paket->thumbnail
+            )  
         ) {
-            Storage::disk('public')->delete($paket_penyuluhan->thumbnail);
+            Storage::disk('public')->delete(
+                $paket->thumbnail
+            );
         }
 
-        $paket_penyuluhan->delete();
+        $paket->delete();
 
         return redirect()
-            ->route('paket-penyuluhan.index')
-            ->with('success', 'Paket penyuluhan berhasil dihapus.');
+            ->route(
+                'paket-penyuluhan.index'
+            )
+            ->with(
+                'success',
+                'Paket penyuluhan berhasil dihapus.'
+            );
     }
 }

@@ -2,6 +2,8 @@
 
 @section('content')
 
+<script src="https://unpkg.com/lucide@latest"></script>
+
 <style>
 
 *{
@@ -11,46 +13,93 @@
     font-family:'Poppins', sans-serif;
 }
 
+body{
+    background:#f3f4f8;
+}
+
 .content{
-    padding:28px;
-    background:#f4f5f9;
+    padding:26px 22px;
     min-height:100vh;
 }
 
-/* ================= HEADER ================= */
-
-.page-header{
-    margin-bottom:24px;
-}
-
-.header-title h1{
-    font-size:40px;
-    font-weight:700;
-    color:#13234a;
-    margin-bottom:4px;
-}
-
-.header-title p{
-    color:#6b7280;
-    font-size:14px;
-}
-
-/* ================= FORM CARD ================= */
-
 .form-card{
-    background:white;
-    border-radius:20px;
+    max-width:750px;
+    margin:0 auto;
     padding:28px;
+    background:white;
+    border-radius:18px;
     border:1px solid #ececf2;
-    max-width:900px;
 }
 
-/* ================= FORM ================= */
+.form-header{
+    margin-bottom:20px;
+}
 
-.form-grid{
+.form-title{
+    color:#13234a;
+    font-size:26px;
+    font-weight:700;
+    margin-bottom:5px;
+}
+
+.form-subtitle{
+    color:#6b7280;
+    font-size:13px;
+}
+
+.quiz-info{
+    background:#f5f6fb;
+    border:1px solid #e5e7eb;
+    border-radius:12px;
+    padding:15px;
+    margin-bottom:22px;
+}
+
+.quiz-info-title{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    color:#13234a;
+    font-size:13px;
+    font-weight:700;
+    margin-bottom:8px;
+}
+
+.quiz-info-title i{
+    width:17px;
+    height:17px;
+}
+
+.progress-text{
+    font-size:12px;
+    color:#64748b;
+}
+
+.progress-text strong{
+    color:#13234a;
+}
+
+.progress-bar{
+    width:100%;
+    height:8px;
+    background:#e5e7eb;
+    border-radius:20px;
+    overflow:hidden;
+    margin-top:10px;
+}
+
+.progress-fill{
+    height:100%;
+    background:#2d3165;
+    border-radius:20px;
+    transition:.3s;
+}
+
+.form-row{
     display:grid;
     grid-template-columns:1fr 1fr;
     gap:20px;
+    margin-bottom:20px;
 }
 
 .form-group{
@@ -59,91 +108,140 @@
 }
 
 .form-group.full{
-    grid-column:1/3;
+    grid-column:1 / 3;
 }
 
-label{
-    font-size:13px;
-    font-weight:600;
-    color:#374151;
+.form-group label{
+    font-size:12px;
+    font-weight:700;
     margin-bottom:8px;
+    color:#374151;
 }
 
-input,
-select,
-textarea{
+.form-group input,
+.form-group select,
+.form-group textarea{
     width:100%;
-    border:1px solid #dcdfe7;
-    border-radius:12px;
-    padding:12px 14px;
+    border:1px solid #e5e7eb;
+    border-radius:10px;
+    padding:12px;
     font-size:13px;
     outline:none;
     background:white;
+    color:#374151;
     transition:.2s;
 }
 
-input:focus,
-select:focus,
-textarea:focus{
-    border-color:#081b44;
-    box-shadow:0 0 0 3px rgba(8,27,68,.08);
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus{
+    border-color:#2d3165;
+    box-shadow:0 0 0 3px rgba(45,49,101,.08);
 }
 
-textarea{
-    resize:none;
+.form-group textarea{
     min-height:120px;
+    resize:vertical;
 }
 
-/* ================= BUTTON ================= */
+.option-label{
+    display:flex;
+    align-items:center;
+    gap:7px;
+}
+
+.option-badge{
+    width:22px;
+    height:22px;
+    border-radius:6px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    background:#e8e9f5;
+    color:#2d3165;
+    font-size:11px;
+    font-weight:700;
+}
+
+.error-message{
+    color:#dc2626;
+    font-size:11px;
+    margin-top:5px;
+}
+
+.error-box{
+    background:#fee2e2;
+    border:1px solid #fecaca;
+    color:#b91c1c;
+    padding:13px 15px;
+    border-radius:10px;
+    margin-bottom:20px;
+    font-size:12px;
+}
+
+.error-box ul{
+    margin:0;
+    padding-left:18px;
+}
 
 .form-action{
-    margin-top:26px;
+    margin-top:25px;
     display:flex;
-    gap:12px;
+    justify-content:flex-end;
+    gap:10px;
 }
 
 .btn{
     height:44px;
     padding:0 18px;
-    border:none;
     border-radius:10px;
     font-size:13px;
     font-weight:600;
     cursor:pointer;
     display:flex;
     align-items:center;
+    justify-content:center;
     gap:8px;
     transition:.2s;
-}
-
-.btn-primary{
-    background:#081b44;
-    color:white;
-}
-
-.btn-primary:hover{
-    background:#061532;
 }
 
 .btn-secondary{
     background:#eef0f5;
     color:#374151;
+    text-decoration:none;
 }
 
 .btn-secondary:hover{
-    background:#dde2ea;
+    background:#e2e5ec;
 }
 
-.btn i{
+.btn-primary{
+    background:#2d3165;
+    color:white;
+    border:none;
+    box-shadow:0 4px 10px rgba(45,49,101,.15);
+}
+
+.btn-primary:hover{
+    background:#252957;
+}
+
+.btn-primary i{
     width:16px;
     height:16px;
 }
 
-/* ================= RESPONSIVE ================= */
+@media(max-width:700px){
 
-@media(max-width:768px){
+    .content{
+        padding:20px 15px;
+    }
 
-    .form-grid{
+    .form-card{
+        padding:20px;
+    }
+
+    .form-row{
         grid-template-columns:1fr;
     }
 
@@ -151,177 +249,420 @@ textarea{
         grid-column:auto;
     }
 
+    .form-action{
+        flex-direction:column-reverse;
+    }
+
+    .btn{
+        width:100%;
+    }
+
 }
 
 </style>
 
+
 <div class="content">
 
-    <!-- HEADER -->
-    <div class="page-header">
+    <div class="form-card">
 
-        <div class="header-title">
 
-            <h1>Tambah Soal</h1>
+        {{-- HEADER --}}
 
-            <p>
-                Tambahkan soal baru untuk kuis literasi hukum
+        <div class="form-header">
+
+            <h2 class="form-title">
+                Tambah Soal
+            </h2>
+
+            <p class="form-subtitle">
+                Tambahkan soal untuk kuis literasi hukum
             </p>
 
         </div>
 
-    </div>
 
-    <!-- FORM -->
-    <div class="form-card">
+        {{-- INFO KUIS --}}
 
-        <form action="{{ route('soal.store', $kuis->id) }}"
-              method="POST">
+        <div class="quiz-info">
+
+            <div class="quiz-info-title">
+
+                <i data-lucide="clipboard-check"></i>
+
+                {{ $kuis->judul }}
+
+            </div>
+
+
+            <div class="progress-text">
+
+                Soal yang sudah dibuat:
+
+                <strong>
+                    {{ $jumlahSoalSaatIni }}
+                    /
+                    {{ $kuis->jumlah_soal }}
+                    soal
+                </strong>
+
+            </div>
+
+
+            @php
+
+                $persentase = $kuis->jumlah_soal > 0
+                    ? ($jumlahSoalSaatIni / $kuis->jumlah_soal) * 100
+                    : 0;
+
+            @endphp
+
+
+            <div class="progress-bar">
+
+                <div
+                    class="progress-fill"
+                    style="width:{{ min($persentase, 100) }}%;"
+                ></div>
+
+            </div>
+
+        </div>
+
+
+        {{-- ERROR --}}
+
+        @if($errors->any())
+
+            <div class="error-box">
+
+                <ul>
+
+                    @foreach($errors->all() as $error)
+
+                        <li>
+                            {{ $error }}
+                        </li>
+
+                    @endforeach
+
+                </ul>
+
+            </div>
+
+        @endif
+
+
+        {{-- FORM --}}
+
+        <form
+            action="{{ route('soal.store', $kuis->id) }}"
+            method="POST"
+        >
 
             @csrf
 
-            <div class="form-grid">
 
-                <!-- PERTANYAAN -->
-                <div class="form-group full">
+            {{-- PERTANYAAN --}}
 
-                    <label>Pertanyaan</label>
+            <div
+                class="form-group"
+                style="margin-bottom:20px;"
+            >
 
-                    <textarea name="pertanyaan"
-                              placeholder="Masukkan pertanyaan soal..."
-                              required></textarea>
+                <label>
+                    PERTANYAAN
+                </label>
 
-                </div>
+                <textarea
+                    name="pertanyaan"
+                    placeholder="Masukkan pertanyaan soal..."
+                    required
+                >{{ old('pertanyaan') }}</textarea>
 
-                <!-- OPSI A -->
+                @error('pertanyaan')
+
+                    <span class="error-message">
+                        {{ $message }}
+                    </span>
+
+                @enderror
+
+            </div>
+
+
+            {{-- A + B --}}
+
+            <div class="form-row">
+
+
                 <div class="form-group">
 
-                    <label>Opsi A</label>
+                    <label class="option-label">
 
-                    <input type="text"
-                           name="opsi_a"
-                           placeholder="Masukkan jawaban A"
-                           required>
-
-                </div>
-
-                <!-- OPSI B -->
-                <div class="form-group">
-
-                    <label>Opsi B</label>
-
-                    <input type="text"
-                           name="opsi_b"
-                           placeholder="Masukkan jawaban B"
-                           required>
-
-                </div>
-
-                <!-- OPSI C -->
-                <div class="form-group">
-
-                    <label>Opsi C</label>
-
-                    <input type="text"
-                           name="opsi_c"
-                           placeholder="Masukkan jawaban C"
-                           required>
-
-                </div>
-
-                <!-- OPSI D -->
-                <div class="form-group">
-
-                    <label>Opsi D</label>
-
-                    <input type="text"
-                           name="opsi_d"
-                           placeholder="Masukkan jawaban D"
-                           required>
-
-                </div>
-
-                <!-- JAWABAN BENAR -->
-                <div class="form-group">
-
-                    <label>Jawaban Benar</label>
-
-                    <select name="jawaban_benar" required>
-
-                        <option value="">
-                            Pilih Jawaban
-                        </option>
-
-                        <option value="A">
+                        <span class="option-badge">
                             A
-                        </option>
+                        </span>
 
-                        <option value="B">
-                            B
-                        </option>
+                        PILIHAN A
 
-                        <option value="C">
-                            C
-                        </option>
+                    </label>
 
-                        <option value="D">
-                            D
-                        </option>
+                    <input
+                        type="text"
+                        name="pilihan_a"
+                        value="{{ old('pilihan_a') }}"
+                        placeholder="Masukkan jawaban A"
+                        required
+                    >
 
-                    </select>
+                    @error('pilihan_a')
+
+                        <span class="error-message">
+                            {{ $message }}
+                        </span>
+
+                    @enderror
 
                 </div>
 
-                <!-- STATUS -->
+
                 <div class="form-group">
 
-                    <label>Status</label>
+                    <label class="option-label">
 
-                    <select name="status">
+                        <span class="option-badge">
+                            B
+                        </span>
 
-                        <option value="Aktif">
-                            Aktif
-                        </option>
+                        PILIHAN B
 
-                        <option value="Draft">
-                            Draft
-                        </option>
+                    </label>
 
-                        <option value="Nonaktif">
-                            Nonaktif
-                        </option>
+                    <input
+                        type="text"
+                        name="pilihan_b"
+                        value="{{ old('pilihan_b') }}"
+                        placeholder="Masukkan jawaban B"
+                        required
+                    >
 
-                    </select>
+                    @error('pilihan_b')
+
+                        <span class="error-message">
+                            {{ $message }}
+                        </span>
+
+                    @enderror
 
                 </div>
 
             </div>
 
-            <!-- BUTTON -->
+
+            {{-- C + D --}}
+
+            <div class="form-row">
+
+
+                <div class="form-group">
+
+                    <label class="option-label">
+
+                        <span class="option-badge">
+                            C
+                        </span>
+
+                        PILIHAN C
+
+                    </label>
+
+                    <input
+                        type="text"
+                        name="pilihan_c"
+                        value="{{ old('pilihan_c') }}"
+                        placeholder="Masukkan jawaban C"
+                        required
+                    >
+
+                    @error('pilihan_c')
+
+                        <span class="error-message">
+                            {{ $message }}
+                        </span>
+
+                    @enderror
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label class="option-label">
+
+                        <span class="option-badge">
+                            D
+                        </span>
+
+                        PILIHAN D
+
+                    </label>
+
+                    <input
+                        type="text"
+                        name="pilihan_d"
+                        value="{{ old('pilihan_d') }}"
+                        placeholder="Masukkan jawaban D"
+                        required
+                    >
+
+                    @error('pilihan_d')
+
+                        <span class="error-message">
+                            {{ $message }}
+                        </span>
+
+                    @enderror
+
+                </div>
+
+            </div>
+
+
+            {{-- JAWABAN + KESULITAN --}}
+
+            <div class="form-row">
+
+
+                <div class="form-group">
+
+                    <label>
+                        JAWABAN BENAR
+                    </label>
+
+                    <select
+                        name="jawaban_benar"
+                        required
+                    >
+
+                        <option value="">
+                            Pilih jawaban yang benar
+                        </option>
+
+                        <option
+                            value="A"
+                            {{ old('jawaban_benar') == 'A' ? 'selected' : '' }}
+                        >
+                            A
+                        </option>
+
+                        <option
+                            value="B"
+                            {{ old('jawaban_benar') == 'B' ? 'selected' : '' }}
+                        >
+                            B
+                        </option>
+
+                        <option
+                            value="C"
+                            {{ old('jawaban_benar') == 'C' ? 'selected' : '' }}
+                        >
+                            C
+                        </option>
+
+                        <option
+                            value="D"
+                            {{ old('jawaban_benar') == 'D' ? 'selected' : '' }}
+                        >
+                            D
+                        </option>
+
+                    </select>
+
+                    @error('jawaban_benar')
+
+                        <span class="error-message">
+                            {{ $message }}
+                        </span>
+
+                    @enderror
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        TINGKAT KESULITAN
+                    </label>
+
+                    <select
+                        name="kesulitan"
+                        required
+                    >
+
+                        <option value="">
+                            Pilih tingkat kesulitan
+                        </option>
+
+                        <option
+                            value="Mudah"
+                            {{ old('kesulitan') == 'Mudah' ? 'selected' : '' }}
+                        >
+                            Mudah
+                        </option>
+
+                        <option
+                            value="Sedang"
+                            {{ old('kesulitan') == 'Sedang' ? 'selected' : '' }}
+                        >
+                            Sedang
+                        </option>
+
+                        <option
+                            value="Sulit"
+                            {{ old('kesulitan') == 'Sulit' ? 'selected' : '' }}
+                        >
+                            Sulit
+                        </option>
+
+                    </select>
+
+                    @error('kesulitan')
+
+                        <span class="error-message">
+                            {{ $message }}
+                        </span>
+
+                    @enderror
+
+                </div>
+
+            </div>
+
+
+            {{-- BUTTON --}}
+
             <div class="form-action">
 
-                <button type="submit"
-                        class="btn btn-primary">
+                <a
+                    href="{{ route('soal.index', $kuis->id) }}"
+                    class="btn btn-secondary"
+                >
+                    Kembali
+                </a>
+
+
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                >
 
                     <i data-lucide="save"></i>
 
                     Simpan Soal
 
                 </button>
-
-                <a href="{{ route('soal.index', $kuis->id) }}"
-                   style="text-decoration:none;">
-
-                    <button type="button"
-                            class="btn btn-secondary">
-
-                        <i data-lucide="arrow-left"></i>
-
-                        Kembali
-
-                    </button>
-
-                </a>
 
             </div>
 
@@ -331,8 +672,22 @@ textarea{
 
 </div>
 
+
 <script>
-lucide.createIcons();
+
+document.addEventListener(
+    'DOMContentLoaded',
+    function(){
+
+        if(typeof lucide !== 'undefined'){
+
+            lucide.createIcons();
+
+        }
+
+    }
+);
+
 </script>
 
 @endsection

@@ -12,20 +12,13 @@ return new class extends Migration
 
             $table->id();
 
-            $table->string('judul');
+        $table->foreignId('kategori_id')
+            ->constrained('kategoris')
+            ->restrictOnDelete();
 
-            $table->string('kategori');
+        $table->string('thumbnail')->nullable();
 
-            $table->string('thumbnail')->nullable();
-
-            $table->integer('jumlah_halaman')->default(8);
-
-            $table->integer('views')->default(0);
-
-            $table->text('deskripsi')->nullable();
-
-            $table->timestamps();
-
+        $table->timestamps();
         });
     }
 

@@ -2,10 +2,21 @@
 
 @section('content')
 
+<script src="https://unpkg.com/lucide@latest"></script>
+
 <style>
 
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins', sans-serif;
+}
+
+/* ================= CONTENT ================= */
+
 .content{
-    padding:28px;
+    padding:26px 22px;
     background:#f4f5f9;
     min-height:100vh;
 }
@@ -13,7 +24,7 @@
 /* ================= HEADER ================= */
 
 .page-header{
-    margin-bottom:22px;
+    margin-bottom:24px;
 }
 
 .header-top{
@@ -24,7 +35,7 @@
 }
 
 .header-title h1{
-    font-size:42px;
+    font-size:40px;
     font-weight:700;
     color:#13234a;
     margin-bottom:4px;
@@ -35,63 +46,142 @@
     font-size:15px;
 }
 
-/* ================= BUTTON ================= */
+/* ================= HEADER BUTTON ================= */
 
 .header-action{
-    display:flex;
-    align-items:center;
-    gap:10px;
-}
-
-.filter-btn{
-    height:42px;
-    padding:0 16px;
-    border:1px solid #dcdfe7;
-    background:white;
-    border-radius:10px;
-    display:flex;
-    align-items:center;
-    gap:8px;
-    font-size:13px;
-    font-weight:600;
-    color:#444;
-    cursor:pointer;
+    flex-shrink:0;
 }
 
 .btn{
-    height:42px;
-    padding:0 18px;
-    border:none;
-    border-radius:10px;
-    background:#081b44;
+    background:#2d3165;
     color:white;
-    display:flex;
-    align-items:center;
-    gap:8px;
+    border:none;
+    height:44px;
+    padding:0 18px;
+    border-radius:10px;
     font-size:13px;
     font-weight:600;
     cursor:pointer;
-    box-shadow:0 4px 10px rgba(8,27,68,0.18);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    box-shadow:0 4px 10px rgba(45,49,101,0.15);
+    transition:0.2s;
 }
 
-.btn i,
-.filter-btn i{
+.btn:hover{
+    background:#252957;
+}
+
+.btn i{
     width:16px;
     height:16px;
 }
 
-/* ================= TABLE ================= */
+/* ================= NOTIFICATION ================= */
+
+.alert-success{
+    position:relative;
+    display:flex;
+    align-items:center;
+    gap:12px;
+
+    background:#e8f8ef;
+    color:#16865b;
+
+    border:1px solid #c9efd9;
+    border-radius:12px;
+
+    padding:13px 16px;
+    margin-bottom:20px;
+
+    font-size:13px;
+    font-weight:600;
+
+    animation:slideDown .3s ease;
+}
+
+.alert-success > i{
+    width:19px;
+    height:19px;
+    flex-shrink:0;
+}
+
+.alert-close{
+    margin-left:auto;
+
+    width:28px;
+    height:28px;
+
+    border:none;
+    background:transparent;
+
+    color:#16865b;
+
+    cursor:pointer;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:7px;
+
+    transition:.2s;
+}
+
+.alert-close:hover{
+    background:rgba(22,134,91,.10);
+}
+
+.alert-close i{
+    width:16px;
+    height:16px;
+}
+
+@keyframes slideDown{
+
+    from{
+        opacity:0;
+        transform:translateY(-8px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+
+}
+
+@keyframes fadeOut{
+
+    from{
+        opacity:1;
+        transform:translateY(0);
+    }
+
+    to{
+        opacity:0;
+        transform:translateY(-8px);
+    }
+
+}
+
+/* ================= TABLE BOX ================= */
 
 .table-box{
     background:white;
-    border-radius:20px;
+    border-radius:18px;
     overflow:hidden;
     border:1px solid #ececf2;
 }
 
+/* ================= TABLE ================= */
+
 table{
     width:100%;
     border-collapse:collapse;
+    table-layout:fixed;
 }
 
 thead{
@@ -99,18 +189,21 @@ thead{
 }
 
 th{
-    padding:20px 16px;
+    height:54px;
+    padding:0 14px;
     text-align:left;
+    vertical-align:middle;
     font-size:11px;
-    font-weight:700;
     color:#6b7280;
     border-bottom:1px solid #ececf2;
+    font-weight:700;
     white-space:nowrap;
 }
 
 td{
-    padding:16px;
-    border-bottom:1px solid #ececf2;
+    height:64px;
+    padding:12px 14px;
+    border-bottom:1px solid #f1f2f6;
     font-size:13px;
     color:#111827;
     vertical-align:middle;
@@ -118,82 +211,165 @@ td{
 
 /* ================= COLUMN SIZE ================= */
 
+/* Judul */
+
 th:nth-child(1),
 td:nth-child(1){
-    width:240px;
-    padding-left:55px;
+    width:36%;
+    padding-left:28px;
 }
+
+/* Kategori */
 
 th:nth-child(2),
 td:nth-child(2){
-    width:140px;
+    width:19%;
 }
+
+/* Jumlah soal */
 
 th:nth-child(3),
 td:nth-child(3){
-    width:170px;
+    width:14%;
 }
+
+/* Status */
 
 th:nth-child(4),
 td:nth-child(4){
-    width:120px;
+    width:12%;
 }
+
+/* Tanggal */
 
 th:nth-child(5),
 td:nth-child(5){
-    width:120px;
+    width:12%;
 }
+
+/* Aksi */
 
 th:nth-child(6),
 td:nth-child(6){
-    width:130px;
-}
-
-th:nth-child(7),
-td:nth-child(7){
     width:90px;
+    padding-left:8px;
+    padding-right:8px;
 }
 
 /* ================= TITLE ================= */
 
 .quiz-title{
-    font-size:14px;
-    font-weight:700;
-    color:#202020;
-    line-height:1.35;
-    max-width:180px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    min-height:38px;
+}
+
+.quiz-icon{
+    width:32px;
+    height:32px;
+    border-radius:9px;
+
+    background:#e8e9f5;
+    color:#2d3165;
 
     display:flex;
     align-items:center;
-    min-height:50px;
+    justify-content:center;
+
+    flex-shrink:0;
 }
+
+.quiz-icon i{
+    width:16px;
+    height:16px;
+}
+
+.quiz-name{
+    display:flex;
+    align-items:center;
+    min-width:0;
+}
+
+.quiz-name a{
+    color:#14224a;
+    text-decoration:none;
+
+    font-size:13px;
+    font-weight:600;
+    line-height:1.4;
+
+    display:block;
+    max-width:100%;
+
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+.quiz-name a:hover{
+    color:#2563eb;
+}
+
+/* ================= CATEGORY ================= */
+
+.category{
+    background:#eeeeee;
+    color:#555;
+
+    padding:5px 10px;
+
+    border-radius:30px;
+
+    font-size:10px;
+    font-weight:700;
+
+    display:inline-flex;
+    align-items:center;
+
+    white-space:nowrap;
+}
+
+/* ================= TEXT ================= */
 
 .text-muted{
-    color:#4b5563;
-    line-height:1.5;
-    font-size:13px;
+    color:#6b7280;
+    font-size:12px;
 }
 
-/* ================= BADGE ================= */
+.question-count{
+    font-size:12px;
+    color:#374151;
+    font-weight:600;
+    white-space:nowrap;
+}
+
+/* ================= STATUS ================= */
 
 .badge{
     display:inline-flex;
     align-items:center;
     justify-content:center;
-    padding:5px 12px;
+    gap:5px;
+
+    padding:5px 10px;
+
     border-radius:20px;
-    font-size:11px;
+
+    font-size:10px;
     font-weight:600;
+
+    white-space:nowrap;
 }
 
 .publish{
-    background:#dcfce7;
-    color:#16a34a;
+    background:#dff7e8;
+    color:#189a55;
 }
 
 .draft{
-    background:#fef3c7;
-    color:#ca8a04;
+    background:#ffe9bf;
+    color:#c78300;
 }
 
 .nonaktif{
@@ -206,22 +382,59 @@ td:nth-child(7){
 .action{
     display:flex;
     align-items:center;
-    gap:12px;
+    justify-content:flex-start;
+    gap:8px;
 }
 
 .action a{
+    width:20px;
+    height:20px;
+
     text-decoration:none;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
 }
 
-.action i{
-    width:15px;
-    height:15px;
-    color:#444;
+.action form{
+    margin:0;
+    padding:0;
+}
+
+.action button{
+    width:20px;
+    height:20px;
+
+    padding:0;
+
+    border:none;
+    background:none;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
     cursor:pointer;
 }
 
+.action i{
+    width:13px;
+    height:13px;
+
+    stroke-width:2.3;
+}
+
+.edit{
+    color:#14224a;
+}
+
 .delete{
-    color:#dc2626 !important;
+    color:#dc2626;
+}
+
+.soal{
+    color:#2563eb;
 }
 
 /* ================= PAGINATION ================= */
@@ -230,35 +443,39 @@ td:nth-child(7){
     display:flex;
     justify-content:space-between;
     align-items:center;
-    padding:16px 18px;
+
+    padding:16px 20px;
+
     background:#fafafa;
 }
 
 .pagination span{
-    font-size:13px;
+    font-size:12px;
     color:#666;
 }
 
 .page-number{
     display:flex;
     align-items:center;
-    gap:14px;
+    gap:10px;
 }
 
 .page{
     width:24px;
     height:24px;
-    border-radius:7px;
+
+    border-radius:6px;
+
     display:flex;
     align-items:center;
     justify-content:center;
+
     font-size:12px;
-    cursor:pointer;
     color:#333;
 }
 
 .page.active{
-    background:#081b44;
+    background:#14224a;
     color:white;
 }
 
@@ -266,7 +483,35 @@ td:nth-child(7){
     width:15px;
     height:15px;
     color:#666;
-    cursor:pointer;
+}
+
+/* ================= EMPTY ================= */
+
+.empty-data{
+    text-align:center;
+    padding:45px 20px;
+    color:#6b7280;
+}
+
+.empty-icon{
+    width:40px;
+    height:40px;
+
+    margin-bottom:10px;
+
+    color:#9ca3af;
+}
+
+.empty-data h3{
+    font-size:14px;
+    color:#374151;
+
+    margin-bottom:5px;
+}
+
+.empty-data p{
+    font-size:12px;
+    color:#9ca3af;
 }
 
 /* ================= RESPONSIVE ================= */
@@ -276,6 +521,7 @@ td:nth-child(7){
     .header-top{
         flex-direction:column;
         align-items:flex-start;
+        gap:15px;
     }
 
     .table-box{
@@ -283,245 +529,401 @@ td:nth-child(7){
     }
 
     table{
-        min-width:900px;
+        min-width:850px;
+        table-layout:auto;
     }
 
 }
 
 </style>
 
-<div class="content">
+<!-- ================= HEADER ================= -->
 
-    <!-- HEADER -->
-    <div class="page-header">
+<div class="page-header">
 
-        <div class="header-top">
 
-            <div class="header-title">
-                <h1>Kelola Kuis</h1>
-                <p>Kelola kuis literasi hukum untuk evaluasi pemahaman siswa.</p>
-            </div>
+<div class="header-top">
 
-            <div class="header-action">
+    <div class="header-title">
 
-                <button class="filter-btn">
-                    <i data-lucide="filter"></i>
-                    Filter
-                </button>
+        <h1>Kelola Kuis</h1>
 
-                <a href="{{ route('kuis.create') }}" style="text-decoration:none;">
-                    <button class="btn">
-                        <i data-lucide="plus"></i>
-                        Buat Kuis Baru
-                    </button>
-                </a>
-
-            </div>
-
-        </div>
+        <p>
+            Kelola kuis literasi hukum untuk evaluasi pemahaman siswa.
+        </p>
 
     </div>
 
-    <!-- TABLE -->
-    <div class="table-box">
 
-        <table>
+    <div class="header-action">
 
-            <thead>
+        <a
+            href="{{ route('kuis.create') }}"
+            style="text-decoration:none;"
+        >
 
-                <tr>
+            <button
+                type="button"
+                class="btn"
+            >
 
-                    <th>JUDUL KUIS</th>
-                    <th>KATEGORI</th>
-                    <th>PAKET<br>PENYULUHAN</th>
-                    <th>JUMLAH<br>SOAL</th>
-                    <th>STATUS</th>
-                    <th>TANGGAL<br>DIBUAT</th>
-                    <th>AKSI</th>
+                <i data-lucide="plus"></i>
 
-                </tr>
+                Buat Kuis Baru
 
-            </thead>
-
-            <tbody>
-
-@forelse($kuis as $item)
-
-<tr>
-
-    <!-- JUDUL -->
-    <td>
-
-        <a href="{{ route('kuis.show',$item->id) }}"
-           style="text-decoration:none;">
-
-            <div class="quiz-title"
-                 style="
-                    color:#081b44;
-                    cursor:pointer;
-                    transition:.2s;
-                 "
-                 onmouseover="this.style.color='#2563eb'"
-                 onmouseout="this.style.color='#081b44'">
-
-                {{ $item->judul }}
-
-            </div>
+            </button>
 
         </a>
-
-    </td>
-
-    <!-- KATEGORI -->
-    <td>
-
-        <div class="text-muted">
-            {{ $item->kategori }}
-        </div>
-
-    </td>
-
-    <!-- PAKET -->
-    <td>
-
-        <div class="text-muted">
-            {{ $item->paket_penyuluhan }}
-        </div>
-
-    </td>
-
-    <!-- JUMLAH SOAL -->
-    <td>
-
-        <div class="text-muted">
-            {{ $item->jumlah_soal }} Soal
-        </div>
-
-    </td>
-
-    <!-- STATUS -->
-    <td>
-
-        @if($item->status == 'Aktif')
-
-            <span class="badge publish">
-                Aktif
-            </span>
-
-        @elseif($item->status == 'Draft')
-
-            <span class="badge draft">
-                Draft
-            </span>
-
-        @else
-
-            <span class="badge nonaktif">
-                Nonaktif
-            </span>
-
-        @endif
-
-    </td>
-
-    <!-- TANGGAL -->
-    <td>
-
-        <div class="text-muted">
-            {{ $item->created_at ? $item->created_at->format('d M') : '-' }}<br>
-            {{ $item->created_at ? $item->created_at->format('Y') : '-' }}
-        </div>
-
-    </td>
-
-    <!-- AKSI -->
-    <td>
-
-        <div class="action">
-
-            <!-- EDIT -->
-            <a href="{{ route('kuis.edit',$item->id) }}">
-
-                <i data-lucide="pencil"></i>
-
-            </a>
-
-            <!-- DELETE -->
-            <form action="{{ route('kuis.destroy',$item->id) }}"
-                  method="POST"
-                  onsubmit="return confirm('Yakin ingin menghapus kuis ini?')">
-
-                @csrf
-                @method('DELETE')
-
-                <button
-                    type="submit"
-                    style="
-                        border:none;
-                        background:none;
-                        padding:0;
-                        cursor:pointer;
-                    ">
-
-                    <i data-lucide="trash-2"
-                       class="delete"></i>
-
-                </button>
-
-            </form>
-
-        </div>
-
-    </td>
-
-</tr>
-
-@empty
-
-<tr>
-
-    <td colspan="7"
-        style="text-align:center;padding:30px;">
-
-        Belum ada data kuis
-
-    </td>
-
-</tr>
-
-@endforelse
-
-</tbody>
-
-        </table>
-
-        <!-- PAGINATION -->
-        <div class="pagination">
-
-            <span>
-                Menampilkan 1-{{ count($kuis) }} dari {{ count($kuis) }} kuis
-            </span>
-
-            <div class="page-number">
-
-                <i data-lucide="chevron-left" class="page-arrow"></i>
-
-                <div class="page active">1</div>
-                <div class="page">2</div>
-                <div class="page">3</div>
-
-                <i data-lucide="chevron-right" class="page-arrow"></i>
-
-            </div>
-
-        </div>
 
     </div>
 
 </div>
 
+
+</div>
+
+<!-- ================= NOTIFICATION ================= -->
+
+@if(session('success'))
+
+
+<div
+    class="alert-success"
+    id="successAlert"
+>
+
+    <i data-lucide="check-circle"></i>
+
+    <span>
+        {{ session('success') }}
+    </span>
+
+
+    <button
+        type="button"
+        class="alert-close"
+        onclick="closeAlert()"
+        title="Tutup"
+    >
+
+        <i data-lucide="x"></i>
+
+    </button>
+
+</div>
+
+
+@endif
+
+<!-- ================= TABLE ================= -->
+
+<div class="table-box">
+
+<table>
+
+    <thead>
+
+        <tr>
+
+            <th>JUDUL KUIS</th>
+
+            <th>KATEGORI</th>
+
+            <th>JUMLAH SOAL</th>
+
+            <th>STATUS</th>
+
+            <th>TANGGAL DIBUAT</th>
+
+            <th>AKSI</th>
+
+        </tr>
+
+    </thead>
+
+
+    <tbody>
+
+    @forelse($kuis as $item)
+
+        <tr>
+
+            <!-- ================= JUDUL ================= -->
+
+            <td>
+
+                <div class="quiz-title">
+
+                    <div class="quiz-icon">
+
+                        <i data-lucide="clipboard-check"></i>
+
+                    </div>
+
+
+                    <div class="quiz-name">
+
+                        <a
+                            href="{{ route('kuis.show', $item->id) }}"
+                        >
+
+                            {{ $item->judul }}
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </td>
+
+
+            <!-- ================= KATEGORI ================= -->
+
+            <td>
+
+                @if($item->kategori)
+
+                    <span class="category">
+
+                        {{ $item->kategori->nama_kategori }}
+
+                    </span>
+
+                @else
+
+                    <span class="text-muted">
+                        -
+                    </span>
+
+                @endif
+
+            </td>
+
+
+            <!-- ================= JUMLAH SOAL ================= -->
+
+            <td>
+
+                <span class="question-count">
+
+                    {{ $item->jumlah_soal ?? 0 }} Soal
+
+                </span>
+
+            </td>
+
+
+            <!-- ================= STATUS ================= -->
+
+            <td>
+
+                @if($item->status == 'Aktif')
+
+                    <span class="badge publish">
+                        ● Aktif
+                    </span>
+
+                @elseif($item->status == 'Draft')
+
+                    <span class="badge draft">
+                        ● Draft
+                    </span>
+
+                @else
+
+                    <span class="badge nonaktif">
+                        ● Nonaktif
+                    </span>
+
+                @endif
+
+            </td>
+
+
+            <!-- ================= TANGGAL ================= -->
+
+            <td>
+
+                <span class="text-muted">
+
+                    {{ $item->created_at
+                        ? $item->created_at->format('d M Y')
+                        : '-'
+                    }}
+
+                </span>
+
+            </td>
+
+
+            <!-- ================= AKSI ================= -->
+
+            <td>
+
+                <div class="action">
+
+                    <!-- EDIT -->
+
+                    <a
+                        href="{{ route('kuis.edit', $item->id) }}"
+                        title="Edit Kuis"
+                    >
+
+                        <i
+                            data-lucide="pencil"
+                            class="edit"
+                        ></i>
+
+                    </a>
+
+
+                    <!-- DELETE -->
+
+                    <form
+                        action="{{ route('kuis.destroy', $item->id) }}"
+                        method="POST"
+                        onsubmit="return confirm('Yakin ingin menghapus kuis ini?')"
+                    >
+
+                        @csrf
+
+                        @method('DELETE')
+
+                        <button
+                            type="submit"
+                            title="Hapus Kuis"
+                        >
+
+                            <i
+                                data-lucide="trash-2"
+                                class="delete"
+                            ></i>
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </td>
+
+        </tr>
+
+    @empty
+
+        <tr>
+
+            <td colspan="6">
+
+                <div class="empty-data">
+
+                    <i
+                        data-lucide="clipboard-x"
+                        class="empty-icon"
+                    ></i>
+
+                    <h3>
+                        Belum Ada Kuis
+                    </h3>
+
+                    <p>
+                        Belum ada kuis literasi hukum yang ditambahkan.
+                    </p>
+
+                </div>
+
+            </td>
+
+        </tr>
+
+    @endforelse
+
+    </tbody>
+
+</table>
+
+
+<!-- ================= PAGINATION ================= -->
+
+<div class="pagination">
+
+    <span>
+
+        Menampilkan {{ count($kuis) }} kuis
+
+    </span>
+
+
+    <div class="page-number">
+
+        <i
+            data-lucide="chevron-left"
+            class="page-arrow"
+        ></i>
+
+        <div class="page active">
+            1
+        </div>
+
+        <i
+            data-lucide="chevron-right"
+            class="page-arrow"
+        ></i>
+
+    </div>
+
+</div>
+
+</div>
+
 <script>
-lucide.createIcons();
+
+    // =========================
+    // LUCIDE ICON
+    // =========================
+
+    lucide.createIcons();
+
+
+    // =========================
+    // CLOSE NOTIFICATION
+    // =========================
+
+    function closeAlert(){
+
+        const alert = document.getElementById('successAlert');
+
+        if(alert){
+
+            alert.style.animation =
+                'fadeOut .3s ease forwards';
+
+            setTimeout(function(){
+
+                alert.remove();
+
+            }, 300);
+
+        }
+
+    }
+
+
+    // =========================
+    // AUTO CLOSE 4 DETIK
+    // =========================
+
+    @if(session('success'))
+
+        setTimeout(function(){
+
+            closeAlert();
+
+        }, 4000);
+
+    @endif
+
 </script>
 
 @endsection

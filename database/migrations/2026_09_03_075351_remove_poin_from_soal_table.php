@@ -1,4 +1,3 @@
-
 <?php
 
 use Illuminate\Database\Migrations\Migration;
@@ -9,20 +8,15 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::table('materi', function (Blueprint $table) {
-
-            $table->text('deskripsi')->nullable();
-
+        Schema::table('soal', function (Blueprint $table) {
+            $table->dropColumn('poin');
         });
     }
 
     public function down(): void
     {
-        Schema::table('materi', function (Blueprint $table) {
-
-            $table->dropColumn('deskripsi');
-
+        Schema::table('soal', function (Blueprint $table) {
+            $table->integer('poin')->default(10);
         });
     }
 };
-

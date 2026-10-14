@@ -2,6 +2,8 @@
 
 @section('content')
 
+<script src="https://unpkg.com/lucide@latest"></script>
+
 <style>
 
 *{
@@ -9,6 +11,10 @@
     padding:0;
     box-sizing:border-box;
     font-family:'Poppins', sans-serif;
+}
+
+body{
+    background:#f3f4f8;
 }
 
 /* ================= CONTENT ================= */
@@ -30,9 +36,9 @@
 }
 
 .header-title h1{
-    font-size:42px;
-    color:#13234a;
+    font-size:40px;
     font-weight:700;
+    color:#13234a;
     margin-bottom:4px;
 }
 
@@ -62,6 +68,7 @@
     gap:8px;
     box-shadow:0 4px 10px rgba(45,49,101,0.15);
     transition:0.3s;
+    text-decoration:none;
 }
 
 .btn:hover{
@@ -80,14 +87,18 @@
     justify-content:space-between;
     align-items:center;
     margin-bottom:16px;
+    gap:15px;
 }
 
 .filters{
     display:flex;
+    align-items:center;
     gap:10px;
+    flex-wrap:wrap;
 }
 
 .filter-select,
+.filter-input,
 .filter-btn{
     height:38px;
     border:1px solid #e5e7eb;
@@ -96,33 +107,104 @@
     padding:0 14px;
     font-size:13px;
     color:#444;
+    outline:none;
+}
+
+.filter-select{
+    min-width:140px;
+    cursor:pointer;
+}
+
+.filter-input{
+    width:220px;
+}
+
+.filter-select:focus,
+.filter-input:focus{
+    border-color:#2d3165;
+    box-shadow:0 0 0 3px rgba(45,49,101,.07);
 }
 
 .filter-btn{
     display:flex;
     align-items:center;
-    gap:8px;
+    gap:7px;
     cursor:pointer;
+    background:#2d3165;
+    color:white;
+    border-color:#2d3165;
+    transition:.2s;
+}
+
+.filter-btn:hover{
+    background:#252957;
+}
+
+.filter-btn i{
+    width:14px;
+    height:14px;
 }
 
 .total-data{
     font-size:13px;
     color:#374151;
     font-weight:600;
+    white-space:nowrap;
 }
 
-/* ================= TABLE ================= */
+/* ================= TABLE BOX ================= */
 
 .table-box{
     background:white;
     border-radius:18px;
-    overflow:hidden;
     border:1px solid #ececf2;
+    overflow:hidden;
+
+    display:flex;
+    flex-direction:column;
 }
+
+/* ================= TABLE SCROLL ================= */
+
+.table-scroll{
+    max-height:calc(100vh - 300px);
+    overflow-y:auto;
+    overflow-x:auto;
+}
+
+/* ================= SCROLLBAR ================= */
+
+.table-scroll::-webkit-scrollbar{
+    width:7px;
+    height:7px;
+}
+
+.table-scroll::-webkit-scrollbar-track{
+    background:#f5f6f8;
+}
+
+.table-scroll::-webkit-scrollbar-thumb{
+    background:#c8cad3;
+    border-radius:10px;
+}
+
+.table-scroll::-webkit-scrollbar-thumb:hover{
+    background:#aeb1bd;
+}
+
+/* ================= TABLE ================= */
 
 table{
     width:100%;
+    min-width:1200px;
     border-collapse:collapse;
+}
+
+thead{
+    position:sticky;
+    top:0;
+    z-index:5;
+    background:white;
 }
 
 th{
@@ -133,6 +215,7 @@ th{
     border-bottom:1px solid #ececf2;
     font-weight:700;
     white-space:nowrap;
+    background:white;
 }
 
 td{
@@ -143,31 +226,39 @@ td{
     vertical-align:middle;
 }
 
+tbody tr{
+    transition:.15s;
+}
+
+tbody tr:hover{
+    background:#fafbfe;
+}
+
 /* ================= COLUMN ================= */
 
 th:nth-child(1),
 td:nth-child(1){
-    width:40px;
+    width:250px;
 }
 
 th:nth-child(2),
 td:nth-child(2){
-    width:250px;
+    width:300px;
 }
 
 th:nth-child(3),
 td:nth-child(3){
-    width:300px;
+    width:130px;
 }
 
 th:nth-child(4),
 td:nth-child(4){
-    width:130px;
+    width:100px;
 }
 
 th:nth-child(5),
 td:nth-child(5){
-    width:100px;
+    width:140px;
 }
 
 th:nth-child(6),
@@ -177,16 +268,11 @@ td:nth-child(6){
 
 th:nth-child(7),
 td:nth-child(7){
-    width:140px;
+    width:120px;
 }
 
 th:nth-child(8),
 td:nth-child(8){
-    width:120px;
-}
-
-th:nth-child(9),
-td:nth-child(9){
     width:120px;
 }
 
@@ -199,9 +285,9 @@ td:nth-child(9){
 }
 
 .file-icon{
-    width:20px;
-    height:20px;
-    border-radius:10px;
+    width:32px;
+    height:32px;
+    border-radius:9px;
     display:flex;
     align-items:center;
     justify-content:center;
@@ -239,8 +325,8 @@ td:nth-child(9){
 }
 
 .file-icon i{
-    width:15px;
-    height:15px;
+    width:16px;
+    height:16px;
 }
 
 .material-title{
@@ -257,6 +343,11 @@ td:nth-child(9){
     font-size:12px;
     line-height:1.5;
     max-width:280px;
+
+    display:-webkit-box;
+    -webkit-line-clamp:2;
+    -webkit-box-orient:vertical;
+    overflow:hidden;
 }
 
 /* ================= CATEGORY ================= */
@@ -297,27 +388,78 @@ td:nth-child(9){
 .action{
     display:flex;
     align-items:center;
-    gap:5px;
+    gap:9px;
 }
 
 .action a{
+    display:flex;
+    align-items:center;
+    justify-content:center;
     text-decoration:none;
+}
+
+.action form{
     display:flex;
     align-items:center;
 }
 
-.action i{
-    width:10px;
-    height:10px;
+.action button{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border:none;
+    background:none;
+    padding:0;
     cursor:pointer;
+}
+
+.action i{
+    width:16px;
+    height:16px;
+    cursor:pointer;
+}
+
+.present{
+    color:#2563eb;
+}
+
+.present:hover{
+    color:#14224a;
 }
 
 .edit{
     color:#14224a;
 }
 
+.edit:hover{
+    color:#2563eb;
+}
+
 .delete{
     color:#dc2626;
+}
+
+.delete:hover{
+    color:#991b1b;
+}
+
+/* ================= EMPTY ================= */
+
+.empty-data{
+    text-align:center;
+    padding:60px 40px;
+    color:#6b7280;
+}
+
+.empty-data i{
+    width:40px;
+    height:40px;
+    margin-bottom:10px;
+    color:#9ca3af;
+}
+
+.empty-data p{
+    font-size:13px;
 }
 
 /* ================= PAGINATION ================= */
@@ -326,35 +468,48 @@ td:nth-child(9){
     display:flex;
     justify-content:space-between;
     align-items:center;
-    padding:16px 18px;
+    padding:14px 18px;
     background:#fafafa;
+    border-top:1px solid #ececf2;
+    flex-shrink:0;
 }
 
-.pagination span{
-    font-size:13px;
+.pagination-info{
+    font-size:12px;
     color:#666;
 }
 
 .page-number{
     display:flex;
     align-items:center;
-    gap:10px;
+    gap:5px;
 }
 
 .page{
-    width:24px;
-    height:24px;
-    border-radius:6px;
+    width:28px;
+    height:28px;
+    border-radius:7px;
     display:flex;
     align-items:center;
     justify-content:center;
     font-size:12px;
     cursor:pointer;
+    color:#555;
+    transition:.2s;
+}
+
+.page:hover{
+    background:#eef0f5;
 }
 
 .page.active{
     background:#14224a;
     color:white;
+}
+
+.page.disabled{
+    opacity:.35;
+    cursor:not-allowed;
 }
 
 .page-arrow{
@@ -363,102 +518,206 @@ td:nth-child(9){
     color:#666;
 }
 
-/* ================= EMPTY ================= */
+/* ================= HIDDEN ROW ================= */
 
-.empty-data{
-    text-align:center;
-    padding:40px;
-    color:#6b7280;
+.material-row.hidden{
+    display:none;
 }
 
 /* ================= RESPONSIVE ================= */
 
+@media(max-width:1100px){
+
+    .header-top{
+        gap:20px;
+    }
+
+    .filter-section{
+        align-items:flex-start;
+    }
+
+}
+
 @media(max-width:900px){
+
+    .content{
+        padding:20px 15px;
+    }
 
     .header-top{
         flex-direction:column;
         gap:16px;
     }
 
+    .header-title h1{
+        font-size:32px;
+    }
+
     .filter-section{
         flex-direction:column;
         align-items:flex-start;
-        gap:14px;
     }
 
-    .table-box{
-        overflow-x:auto;
+    .filters{
+        width:100%;
     }
 
-    table{
-        min-width:1200px;
+    .filter-input{
+        width:100%;
+    }
+
+    .table-scroll{
+        max-height:calc(100vh - 350px);
     }
 
 }
 
 </style>
 
-<div class="content">
 
-    <!-- HEADER -->
-    <div class="page-header">
+<!-- =========================================================
+     HEADER
+========================================================= -->
 
-        <div class="header-top">
+<div class="page-header">
 
-            <div class="header-title">
-                <h1>Kelola Materi</h1>
-                <p>Kelola dokumen, video, dan artikel literasi hukum</p>
-            </div>
+    <div class="header-top">
 
-            <div class="header-action">
+        <div class="header-title">
 
-                <a href="{{ route('materi.create') }}" style="text-decoration:none;">
+            <h1>Kelola Materi</h1>
 
-                    <button class="btn">
+            <p>
+                Kelola dokumen, video, dan artikel literasi hukum
+            </p>
 
-                        <i data-lucide="plus"></i>
-                        Tambah Materi
+        </div>
 
-                    </button>
+        <div class="header-action">
 
-                </a>
+            <a
+                href="{{ route('materi.create') }}"
+                class="btn"
+            >
 
-            </div>
+                <i data-lucide="plus"></i>
+
+                Tambah Materi
+
+            </a>
 
         </div>
 
     </div>
 
-    <!-- FILTER -->
-    <div class="filter-section">
+</div>
 
-        <div class="filters">
 
-            <select class="filter-select">
-                <option>Semua Tipe</option>
-            </select>
+<!-- =========================================================
+     FILTER
+========================================================= -->
 
-            <select class="filter-select">
-                <option>Status: Semua</option>
-            </select>
+<div class="filter-section">
 
-            <button class="filter-btn">
+    <div class="filters">
 
-                <i data-lucide="filter"></i>
-                Filter
+        <!-- SEARCH -->
 
-            </button>
+        <input
+            type="text"
+            id="searchMateri"
+            class="filter-input"
+            placeholder="Cari nama materi..."
+        >
 
-        </div>
 
-        <div class="total-data">
-            {{ count($materi) }} Materi ditemukan
-        </div>
+        <!-- STATUS -->
+
+        <select
+            id="filterStatus"
+            class="filter-select"
+        >
+
+            <option value="">
+                Semua Status
+            </option>
+
+            <option value="Diterbitkan">
+                Diterbitkan
+            </option>
+
+            <option value="Draft">
+                Draft
+            </option>
+
+        </select>
+
+
+        <!-- KATEGORI -->
+
+        <select
+            id="filterKategori"
+            class="filter-select"
+        >
+
+            <option value="">
+                Semua Kategori
+            </option>
+
+            @foreach(
+                $materi
+                    ->pluck('kategori.nama_kategori')
+                    ->filter()
+                    ->unique()
+                    ->sort()
+                as $kategori
+            )
+
+                <option value="{{ strtolower($kategori) }}">
+                    {{ $kategori }}
+                </option>
+
+            @endforeach
+
+        </select>
+
+
+        <!-- FILTER BUTTON -->
+
+        <button
+            type="button"
+            class="filter-btn"
+            id="btnFilter"
+        >
+
+            <i data-lucide="filter"></i>
+
+            Filter
+
+        </button>
 
     </div>
 
-    <!-- TABLE -->
-    <div class="table-box">
+
+    <div
+        class="total-data"
+        id="totalData"
+    >
+
+        {{ count($materi) }} Materi ditemukan
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     TABLE
+========================================================= -->
+
+<div class="table-box">
+
+    <div class="table-scroll">
 
         <table>
 
@@ -466,34 +725,67 @@ td:nth-child(9){
 
                 <tr>
 
-                    <th>
-                        <input type="checkbox">
-                    </th>
-
                     <th>NAMA MATERI</th>
+
                     <th>DESKRIPSI</th>
+
                     <th>KATEGORI</th>
+
                     <th>TIPE</th>
+
                     <th>PENULIS</th>
+
                     <th>TANGGAL DIBUAT</th>
+
                     <th>STATUS</th>
+
                     <th>AKSI</th>
 
                 </tr>
 
             </thead>
 
-            <tbody>
+
+            <tbody id="materiTable">
 
             @forelse($materi as $item)
 
-                <tr>
+                @php
 
-                    <td>
-                        <input type="checkbox">
-                    </td>
+                    $fileUrl = $item->file
+                        ? asset('storage/' . $item->file)
+                        : '#';
+
+                    $extension = $item->file
+                        ? strtolower(
+                            pathinfo(
+                                $item->file,
+                                PATHINFO_EXTENSION
+                            )
+                        )
+                        : '';
+
+                    $kategoriNama =
+                        $item->kategori->nama_kategori ?? '';
+
+                @endphp
+
+
+                <tr
+                    class="material-row"
+
+                    data-title="{{ strtolower($item->judul) }}"
+
+                    data-tipe="{{ strtolower($item->tipe ?? '') }}"
+
+                    data-status="{{ strtolower($item->status ?? '') }}"
+
+                    data-kategori="{{ strtolower($kategoriNama) }}"
+                >
+
 
                     <!-- NAMA MATERI -->
+
                     <td>
 
                         <div class="title-wrap">
@@ -522,7 +814,11 @@ td:nth-child(9){
                                     <i data-lucide="presentation"></i>
                                 </div>
 
-                            @elseif($item->tipe == 'JPG' || $item->tipe == 'PNG' || $item->tipe == 'Gambar')
+                            @elseif(
+                                $item->tipe == 'JPG' ||
+                                $item->tipe == 'PNG' ||
+                                $item->tipe == 'Gambar'
+                            )
 
                                 <div class="file-icon file-green">
                                     <i data-lucide="image"></i>
@@ -536,15 +832,20 @@ td:nth-child(9){
 
                             @endif
 
+
                             <div class="material-title">
+
                                 {{ $item->judul }}
+
                             </div>
 
                         </div>
 
                     </td>
 
+
                     <!-- DESKRIPSI -->
+
                     <td>
 
                         <div class="material-desc">
@@ -555,27 +856,49 @@ td:nth-child(9){
 
                     </td>
 
+
                     <!-- KATEGORI -->
+
                     <td>
 
                         <span class="category">
-                            {{ $item->kategori }}
+
+                            {{ $kategoriNama ?: '-' }}
+
                         </span>
 
                     </td>
 
+
                     <!-- TIPE -->
-                    <td>{{ $item->tipe }}</td>
 
-                    <!-- PENULIS -->
-                    <td>{{ $item->penulis }}</td>
-
-                    <!-- TANGGAL -->
                     <td>
-                        {{ optional($item->created_at)->format('d M Y') ?? '-' }}
+
+                        {{ $item->tipe ?? '-' }}
+
                     </td>
 
+
+                    <!-- PENULIS -->
+
+                    <td>
+
+                        {{ $item->penulis ?? '-' }}
+
+                    </td>
+
+
+                    <!-- TANGGAL -->
+
+                    <td>
+
+                        {{ optional($item->created_at)->format('d M Y') ?? '-' }}
+
+                    </td>
+
+
                     <!-- STATUS -->
+
                     <td>
 
                         @if($item->status == 'Diterbitkan')
@@ -594,45 +917,105 @@ td:nth-child(9){
 
                     </td>
 
+
                     <!-- AKSI -->
+
                     <td>
 
                         <div class="action">
 
+                            <!-- PRESENTASI -->
+
+                            @if($item->file)
+
+                                @if(in_array($extension, ['ppt', 'pptx']))
+
+                                    <a
+                                        href="https://view.officeapps.live.com/op/view.aspx?src={{ urlencode($fileUrl) }}"
+                                        target="_blank"
+                                        title="Buka Presentasi"
+                                        class="present"
+                                    >
+
+                                        <i
+                                            data-lucide="presentation"
+                                        ></i>
+
+                                    </a>
+
+                                @else
+
+                                    <a
+                                        href="{{ $fileUrl }}"
+                                        target="_blank"
+                                        title="Buka Materi"
+                                        class="present"
+                                    >
+
+                                        <i
+                                            data-lucide="presentation"
+                                        ></i>
+
+                                    </a>
+
+                                @endif
+
+                            @else
+
+                                <span
+                                    style="
+                                        color:#9ca3af;
+                                        display:flex;
+                                        align-items:center;
+                                    "
+                                    title="Tidak ada file"
+                                >
+
+                                    <i
+                                        data-lucide="presentation"
+                                    ></i>
+
+                                </span>
+
+                            @endif
+
+
                             <!-- EDIT -->
-                            <a href="{{ route('materi.edit', $item->id) }}">
+
+                            <a
+                                href="{{ route('materi.edit', $item->id) }}"
+                                title="Edit materi"
+                            >
 
                                 <i
                                     data-lucide="pencil"
-                                    class="edit">
-                                </i>
+                                    class="edit"
+                                ></i>
 
                             </a>
 
+
                             <!-- DELETE -->
+
                             <form
                                 action="{{ route('materi.destroy', $item->id) }}"
                                 method="POST"
-                                onsubmit="return confirm('Yakin ingin menghapus materi ini?')">
+                                onsubmit="return confirm('Yakin ingin menghapus materi ini?')"
+                            >
 
                                 @csrf
+
                                 @method('DELETE')
 
                                 <button
                                     type="submit"
-                                    style="
-                                        border:none;
-                                        background:none;
-                                        padding:0;
-                                        display:flex;
-                                        align-items:center;
-                                        cursor:pointer;
-                                    ">
+                                    title="Hapus materi"
+                                >
 
                                     <i
                                         data-lucide="trash-2"
-                                        class="delete">
-                                    </i>
+                                        class="delete"
+                                    ></i>
 
                                 </button>
 
@@ -644,14 +1027,21 @@ td:nth-child(9){
 
                 </tr>
 
+
             @empty
 
-                <tr>
+                <tr id="emptyData">
 
-                    <td colspan="9">
+                    <td colspan="8">
 
                         <div class="empty-data">
-                            Belum ada data materi
+
+                            <i data-lucide="folder-open"></i>
+
+                            <p>
+                                Belum ada data materi
+                            </p>
+
                         </div>
 
                     </td>
@@ -664,20 +1054,61 @@ td:nth-child(9){
 
         </table>
 
-        <!-- PAGINATION -->
-        <div class="pagination">
+    </div>
 
-            <span>
-                Menampilkan {{ count($materi) }} materi
-            </span>
 
-            <div class="page-number">
+    <!-- =====================================================
+         PAGINATION
+    ====================================================== -->
 
-                <i data-lucide="chevron-left" class="page-arrow"></i>
+    <div class="pagination">
 
-                <div class="page active">1</div>
+        <div
+            class="pagination-info"
+            id="paginationInfo"
+        >
 
-                <i data-lucide="chevron-right" class="page-arrow"></i>
+            Menampilkan 0 materi
+
+        </div>
+
+
+        <div class="page-number">
+
+            <div
+                class="page disabled"
+                id="prevPage"
+                title="Halaman sebelumnya"
+            >
+
+                <i
+                    data-lucide="chevron-left"
+                    class="page-arrow"
+                ></i>
+
+            </div>
+
+
+            <div
+                class="page active"
+                id="currentPage"
+            >
+
+                1
+
+            </div>
+
+
+            <div
+                class="page disabled"
+                id="nextPage"
+                title="Halaman berikutnya"
+            >
+
+                <i
+                    data-lucide="chevron-right"
+                    class="page-arrow"
+                ></i>
 
             </div>
 
@@ -687,8 +1118,351 @@ td:nth-child(9){
 
 </div>
 
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+
 <script>
+
+/* ================= LUCIDE ================= */
+
 lucide.createIcons();
+
+
+/* ================= ELEMENT ================= */
+
+const searchMateri =
+    document.getElementById('searchMateri');
+
+const filterStatus =
+    document.getElementById('filterStatus');
+
+const filterKategori =
+    document.getElementById('filterKategori');
+
+const btnFilter =
+    document.getElementById('btnFilter');
+
+const totalData =
+    document.getElementById('totalData');
+
+const paginationInfo =
+    document.getElementById('paginationInfo');
+
+const prevPage =
+    document.getElementById('prevPage');
+
+const nextPage =
+    document.getElementById('nextPage');
+
+const currentPage =
+    document.getElementById('currentPage');
+
+
+/* ================= DATA ================= */
+
+const rows = Array.from(
+    document.querySelectorAll('.material-row')
+);
+
+
+/* ================= PAGINATION ================= */
+
+let currentPageNumber = 1;
+
+const rowsPerPage = 8;
+
+let filteredRows = [...rows];
+
+
+/* ================= FILTER ================= */
+
+function applyFilter(){
+
+    const searchValue =
+        searchMateri.value
+            .toLowerCase()
+            .trim();
+
+    const statusValue =
+        filterStatus.value
+            .toLowerCase()
+            .trim();
+
+    const kategoriValue =
+        filterKategori.value
+            .toLowerCase()
+            .trim();
+
+
+    filteredRows = rows.filter(function(row){
+
+        const title =
+            row.dataset.title || '';
+
+        const status =
+            row.dataset.status || '';
+
+        const kategori =
+            row.dataset.kategori || '';
+
+
+        const matchSearch =
+            title.includes(searchValue);
+
+        const matchStatus =
+            statusValue === '' ||
+            status === statusValue;
+
+        const matchKategori =
+            kategoriValue === '' ||
+            kategori === kategoriValue;
+
+
+        return (
+            matchSearch &&
+            matchStatus &&
+            matchKategori
+        );
+
+    });
+
+
+    currentPageNumber = 1;
+
+    displayRows();
+
+}
+
+
+/* ================= DISPLAY ROW ================= */
+
+function displayRows(){
+
+    rows.forEach(function(row){
+
+        row.classList.add('hidden');
+
+    });
+
+
+    const total =
+        filteredRows.length;
+
+
+    const totalPages =
+        Math.max(
+            1,
+            Math.ceil(
+                total / rowsPerPage
+            )
+        );
+
+
+    if(
+        currentPageNumber >
+        totalPages
+    ){
+
+        currentPageNumber =
+            totalPages;
+
+    }
+
+
+    const start =
+        (currentPageNumber - 1)
+        * rowsPerPage;
+
+
+    const end =
+        start + rowsPerPage;
+
+
+    const pageRows =
+        filteredRows.slice(
+            start,
+            end
+        );
+
+
+    pageRows.forEach(function(row){
+
+        row.classList.remove('hidden');
+
+    });
+
+
+    /* ================= TOTAL ================= */
+
+    totalData.textContent =
+        total + ' Materi ditemukan';
+
+
+    /* ================= PAGINATION INFO ================= */
+
+    if(total === 0){
+
+        paginationInfo.textContent =
+            'Tidak ada materi ditemukan';
+
+    }else{
+
+        paginationInfo.textContent =
+            'Menampilkan ' +
+            (start + 1) +
+            '–' +
+            Math.min(end, total) +
+            ' dari ' +
+            total +
+            ' materi';
+
+    }
+
+
+    /* ================= PAGE ================= */
+
+    currentPage.textContent =
+        currentPageNumber;
+
+
+    /* ================= PREVIOUS ================= */
+
+    if(
+        currentPageNumber <= 1
+    ){
+
+        prevPage.classList.add('disabled');
+
+    }else{
+
+        prevPage.classList.remove('disabled');
+
+    }
+
+
+    /* ================= NEXT ================= */
+
+    if(
+        currentPageNumber >=
+        totalPages
+    ){
+
+        nextPage.classList.add('disabled');
+
+    }else{
+
+        nextPage.classList.remove('disabled');
+
+    }
+
+}
+
+
+/* ================= FILTER BUTTON ================= */
+
+btnFilter.addEventListener(
+    'click',
+    function(){
+
+        applyFilter();
+
+    }
+);
+
+
+/* ================= SEARCH ================= */
+
+searchMateri.addEventListener(
+    'input',
+    function(){
+
+        applyFilter();
+
+    }
+);
+
+
+/* ================= STATUS ================= */
+
+filterStatus.addEventListener(
+    'change',
+    function(){
+
+        applyFilter();
+
+    }
+);
+
+
+/* ================= KATEGORI ================= */
+
+filterKategori.addEventListener(
+    'change',
+    function(){
+
+        applyFilter();
+
+    }
+);
+
+
+/* ================= PREVIOUS PAGE ================= */
+
+prevPage.addEventListener(
+    'click',
+    function(){
+
+        if(
+            currentPageNumber > 1
+        ){
+
+            currentPageNumber--;
+
+            displayRows();
+
+        }
+
+    }
+);
+
+
+/* ================= NEXT PAGE ================= */
+
+nextPage.addEventListener(
+    'click',
+    function(){
+
+        const totalPages =
+            Math.max(
+                1,
+                Math.ceil(
+                    filteredRows.length /
+                    rowsPerPage
+                )
+            );
+
+
+        if(
+            currentPageNumber <
+            totalPages
+        ){
+
+            currentPageNumber++;
+
+            displayRows();
+
+        }
+
+    }
+);
+
+
+/* ================= INITIAL DISPLAY ================= */
+
+displayRows();
+
 </script>
 
 @endsection

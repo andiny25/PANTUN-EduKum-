@@ -1,1350 +1,937 @@
+
 @extends('layouts.sidebar')
 
 @section('content')
 
 <style>
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Inter',sans-serif;
+.hasil-content {
+    width: 100%;
+    padding: 0;
+    background: #F5F6F8;
 }
 
-.content{
-    padding:28px;
-    background:#f5f7fb;
-    min-height:100vh;
+.page-header {
+    margin-bottom: 24px;
 }
 
-/* ===========================
-HEADER
-=========================== */
-
-.page-header{
-    margin-bottom:28px;
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
 }
 
-.header-top{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:20px;
+.header-title h1 {
+    font-size: 36px;
+    font-weight: 700;
+    color: #13234a;
+    margin: 0 0 6px;
 }
 
-.header-title h1{
-
-    font-size:38px;
-    color:#081B44;
-    font-weight:700;
-    margin-bottom:5px;
-
+.header-title p {
+    color: #777A80;
+    font-size: 14px;
+    margin: 0;
 }
 
-.header-title p{
-
-    color:#6b7280;
-    font-size:15px;
-
+.header-action {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
-.header-action{
-
-    display:flex;
-    gap:12px;
-
+.download-btn {
+    height: 42px;
+    padding: 0 17px;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    background: #2B3056;
+    color: white;
+    border: 1px solid #2B3056;
+    transition: .2s;
+    white-space: nowrap;
 }
 
-.export-btn{
-
-    height:42px;
-    padding:0 18px;
-    border-radius:12px;
-    background:white;
-    border:1px solid #e5e7eb;
-    display:flex;
-    align-items:center;
-    gap:8px;
-    cursor:pointer;
-    font-size:13px;
-    font-weight:600;
-    transition:.25s;
-
+.download-btn:hover {
+    background: #101943;
+    color: white;
 }
 
-.export-btn:hover{
-
-    background:#081B44;
-    color:white;
-
+.download-btn i {
+    width: 16px;
+    height: 16px;
 }
 
-.download-btn{
-
-    height:42px;
-    padding:0 18px;
-    border:none;
-    border-radius:12px;
-    background:#081B44;
-    color:white;
-    display:flex;
-    align-items:center;
-    gap:8px;
-    cursor:pointer;
-    font-size:13px;
-    font-weight:600;
-    box-shadow:0 8px 20px rgba(8,27,68,.18);
-
+.cards {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+    margin-bottom: 22px;
 }
 
-/* ===========================
-STAT CARD
-=========================== */
-
-.cards{
-
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:20px;
-    margin-bottom:28px;
-
+.stat-card {
+    position: relative;
+    min-height: 155px;
+    padding: 22px;
+    border-radius: 18px;
+    color: white;
+    overflow: hidden;
+    box-shadow: 0 5px 18px rgba(0, 6, 51, .10);
+    transition: .2s;
 }
 
-.card{
-
-    background:white;
-    border-radius:22px;
-    padding:24px;
-    position:relative;
-    overflow:hidden;
-    border:1px solid #edf0f5;
-    box-shadow:0 8px 25px rgba(0,0,0,.05);
-
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 6, 51, .14);
 }
 
-.card-title{
-
-    font-size:13px;
-    color:#64748B;
-    margin-bottom:12px;
-
+.stat-card:nth-child(1) {
+    background: linear-gradient(135deg, #434F94, #101943);
 }
 
-.card-value{
-
-    font-size:34px;
-    font-weight:700;
-    color:#081B44;
-    margin-bottom:8px;
-
+.stat-card:nth-child(2) {
+    background: linear-gradient(135deg, #FFD82B, #FFAA00);
 }
 
-.card-growth{
-
-    font-size:13px;
-    color:#16A34A;
-    font-weight:600;
-
+.stat-card:nth-child(3) {
+    background: linear-gradient(135deg, #4DBB80, #16865B);
 }
 
-.card-icon{
-
-    position:absolute;
-    top:22px;
-    right:22px;
-    width:55px;
-    height:55px;
-    border-radius:18px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
+.stat-card:nth-child(4) {
+    background: linear-gradient(135deg, #434F94, #101943);
 }
 
-.icon-blue{
-
-    background:#EEF4FF;
-    color:#2563EB;
-
+.card-title {
+    font-size: 13px;
+    color: rgba(255,255,255,.9);
+    margin-bottom: 10px;
 }
 
-.icon-green{
-
-    background:#ECFDF5;
-    color:#16A34A;
-
+.card-value {
+    font-size: 32px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 8px;
+    line-height: 1.2;
 }
 
-.icon-yellow{
-
-    background:#FFF7ED;
-    color:#EA580C;
-
-}
-.export-btn,
-.download-btn{
-    text-decoration:none;
+.card-growth {
+    font-size: 12px;
+    color: rgba(255,255,255,.9);
 }
 
-.export-btn{
-    height:42px;
-    padding:0 18px;
-    border-radius:12px;
-    background:white;
-    border:1px solid #e5e7eb;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:8px;
-    cursor:pointer;
-    font-size:13px;
-    font-weight:600;
-    transition:.25s;
-    color:#444;
+.card-icon {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,.15);
+    border: 1px solid rgba(255,255,255,.16);
 }
 
-.export-btn:hover{
-    background:#EAB308;
-    color:white;
-    border-color:#EAB308;
+.card-icon i {
+    width: 23px;
+    height: 23px;
 }
 
-.download-btn{
-    height:42px;
-    padding:0 18px;
-    border-radius:12px;
-    background:#EAB308;
-    color:white;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:8px;
-    font-size:13px;
-    font-weight:600;
-    transition:.25s;
+.chart-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    gap: 20px;
+    margin-bottom: 22px;
+    align-items: stretch;
 }
 
-.download-btn:hover{
-    background:#CA8A04;
+.chart-box {
+    background: white;
+    border-radius: 18px;
+    padding: 22px;
+    border: 1px solid #ECECF2;
+    box-shadow: 0 5px 18px rgba(0,0,0,.035);
+    min-width: 0;
 }
 
-.icon-purple{
-
-    background:#F5F3FF;
-    color:#7C3AED;
-
+.chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
 }
 
-.card-icon i{
-
-    width:26px;
-    height:26px;
-
+.chart-header h3 {
+    color: #000633;
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0;
 }
 
-/* ===========================
-CHART
-=========================== */
-
-.chart-grid{
-
-    display:grid;
-    grid-template-columns:1fr 2fr;
-    gap:22px;
-    margin-bottom:30px;
-
+.chart-filter {
+    color: #777A80;
+    font-size: 11px;
+    white-space: nowrap;
 }
 
-.chart-box{
-
-    background:white;
-    border-radius:22px;
-    padding:24px;
-    border:1px solid #edf0f5;
-    box-shadow:0 8px 20px rgba(0,0,0,.04);
-
+.chart-container {
+    position: relative;
+    width: 100%;
+    height: 260px;
 }
 
-.chart-header{
-
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:20px;
-
+.table-box {
+    background: white;
+    border-radius: 18px;
+    overflow: hidden;
+    border: 1px solid #ECECF2;
+    box-shadow: 0 5px 18px rgba(0,0,0,.035);
 }
 
-.chart-header h3{
-
-    color:#081B44;
-    font-size:18px;
-
+.table-header {
+    padding: 20px 22px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 18px;
+    border-bottom: 1px solid #ECECF2;
 }
 
-.chart-filter{
-
-    font-size:13px;
-    color:#64748B;
-
+.table-title {
+    font-size: 18px;
+    color: #000633;
+    font-weight: 700;
 }
 
-/* ===========================
-TABLE
-=========================== */
-
-.table-box{
-
-    background:white;
-    border-radius:22px;
-    overflow:hidden;
-    border:1px solid #edf0f5;
-    box-shadow:0 8px 20px rgba(0,0,0,.04);
-
+.table-sub {
+    color: #777A80;
+    margin-top: 4px;
+    font-size: 12px;
 }
 
-.table-header{
-
-    padding:22px 24px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    border-bottom:1px solid #eef2f7;
-
+.table-tools {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    flex-wrap: wrap;
 }
 
-.table-title{
-
-    font-size:20px;
-    color:#081B44;
-    font-weight:700;
-
+.search-wrap {
+    position: relative;
 }
 
-.table-sub{
-
-    color:#6B7280;
-    margin-top:4px;
-    font-size:13px;
-
+.search-wrap i {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 15px;
+    height: 15px;
+    color: #8A8F9D;
+    pointer-events: none;
 }
 
-.table-tools{
-
-    display:flex;
-    gap:12px;
-    align-items:center;
-
+.search {
+    width: 225px;
+    height: 40px;
+    border-radius: 10px;
+    border: 1px solid #dcdfe7;
+    padding: 0 12px 0 36px;
+    outline: none;
+    font-size: 12px;
+    background: white;
 }
 
-.search{
-
-    width:250px;
-    height:42px;
-    border-radius:12px;
-    border:1px solid #e5e7eb;
-    padding:0 15px;
-    outline:none;
-
+.search:focus {
+    border-color: #2B3056;
+    box-shadow: 0 0 0 3px rgba(43,48,86,.07);
 }
 
-.status-filter{
-
-    display:flex;
-    gap:10px;
-
+.status-filter {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
 }
 
-.status-filter button{
-
-    border:none;
-    background:#F3F4F6;
-    padding:8px 16px;
-    border-radius:10px;
-    cursor:pointer;
-    font-size:13px;
-    transition:.2s;
-
+.status-filter button {
+    border: none;
+    background: #f3f4f6;
+    color: #4b5563;
+    padding: 9px 12px;
+    border-radius: 9px;
+    cursor: pointer;
+    font-size: 11px;
+    transition: .2s;
 }
 
-.status-filter button.active{
-
-    background:#081B44;
-    color:white;
-
+.status-filter button:hover {
+    background: #e5e7eb;
 }
 
-table{
-
-    width:100%;
-    border-collapse:collapse;
-
+.status-filter button.active {
+    background: #2B3056;
+    color: white;
 }
 
-thead{
-
-    background:#F9FAFB;
-
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
 }
 
-th{
-
-    padding:18px;
-    font-size:12px;
-    color:#64748B;
-    text-align:left;
-
+#hasilTable {
+    width: 100%;
+    border-collapse: collapse;
 }
 
-td{
-
-    padding:18px;
-    border-top:1px solid #EEF2F7;
-    font-size:14px;
-
+#hasilTable thead {
+    background: #FAFAFC;
 }
 
-tbody tr{
-
-    transition:.2s;
-
+#hasilTable th {
+    padding: 15px 18px;
+    text-align: left;
+    font-size: 10px;
+    font-weight: 700;
+    color: #777A80;
+    border-bottom: 1px solid #ECECF2;
+    white-space: nowrap;
 }
 
-tbody tr:hover{
-
-    background:#F8FAFC;
-
+#hasilTable td {
+    padding: 15px 18px;
+    border-bottom: 1px solid #ECECF2;
+    font-size: 12px;
+    color: #111827;
+    vertical-align: middle;
 }
 
-.user{
-
-    display:flex;
-    align-items:center;
-    gap:12px;
-
+#hasilTable tbody tr {
+    transition: background .2s;
 }
 
-.avatar{
-
-    width:45px;
-    height:45px;
-    border-radius:50%;
-    background:#DBEAFE;
-    color:#081B44;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    font-weight:700;
-
+#hasilTable tbody tr:hover {
+    background: #fafbfc;
 }
 
-.name{
-
-    font-weight:700;
-    color:#081B44;
-
+.user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 160px;
 }
 
-.school{
-
-    font-size:12px;
-    color:#6B7280;
-    margin-top:3px;
-
+.avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #E9EBF7;
+    color: #2B3056;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    flex-shrink: 0;
+    text-transform: uppercase;
 }
 
-.badge{
-
-    padding:7px 14px;
-    border-radius:30px;
-    font-size:12px;
-    font-weight:600;
-
+.name {
+    font-weight: 700;
+    color: #000633;
+    font-size: 12px;
 }
 
-.lulus{
-
-    background:#DCFCE7;
-    color:#16A34A;
-
+.school {
+    font-size: 10px;
+    color: #777A80;
+    margin-top: 3px;
 }
 
-.remedial{
-
-    background:#FEE2E2;
-    color:#DC2626;
-
+.score {
+    font-size: 13px;
+    font-weight: 700;
+    color: #13234a;
 }
 
-.detail-btn{
+.badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 11px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 600;
+    white-space: nowrap;
+}
 
-    background:#081B44;
-    color:white;
-    border:none;
-    padding:9px 16px;
-    border-radius:10px;
-    cursor:pointer;
+.lulus {
+    background: #EEF9E9;
+    color: #16865B;
+}
 
+.remedial {
+    background: #FFF4E6;
+    color: #D96F00;
+}
+
+.belum {
+    background: #FFFBEA;
+    color: #B39200;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 42px 20px !important;
+    color: #777A80 !important;
+}
+
+.empty-state i {
+    width: 32px;
+    height: 32px;
+    color: #B7BBC8;
+    margin-bottom: 10px;
+}
+
+.empty-state div {
+    margin-top: 8px;
+}
+
+.pagination-wrapper {
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    background: #FAFAFA;
+    flex-wrap: wrap;
+}
+
+.pagination-info {
+    color: #777A80;
+    font-size: 11px;
+}
+
+.pagination-wrapper nav p {
+    margin: 0;
+}
+
+.pagination-wrapper nav svg {
+    width: 16px;
+    height: 16px;
+}
+
+.pagination-wrapper nav a,
+.pagination-wrapper nav span {
+    font-size: 12px;
+}
+
+.pagination-wrapper nav > div {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.no-filter-result {
+    display: none;
+    text-align: center;
+    padding: 25px;
+    color: #777A80;
+    font-size: 12px;
+}
+
+@media(max-width: 1100px) {
+    .cards {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .chart-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media(max-width: 800px) {
+    .header-top {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .header-action {
+        width: 100%;
+    }
+
+    .cards {
+        grid-template-columns: 1fr;
+    }
+
+    .table-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .table-tools {
+        justify-content: flex-start;
+    }
+
+    .search-wrap,
+    .search {
+        width: 100%;
+    }
+
+    .chart-box {
+        padding: 16px;
+    }
+
+    .chart-container {
+        height: 240px;
+    }
+
+    .header-title h1 {
+        font-size: 29px;
+    }
+
+    .pagination-wrapper {
+        align-items: flex-start;
+        flex-direction: column;
+    }
 }
 </style>
+    {{-- HEADER --}}
+    <div class="page-header">
+        <div class="header-top">
+            <div class="header-title">
+                <h1>Hasil Kuis</h1>
+                <p>
+                    Pantau hasil dan perkembangan pemahaman siswa
+                    melalui kuis literasi hukum.
+                </p>
+            </div>
 
-<div class="content">
-
-   <!-- ================= HEADER ================= -->
-
-<div class="page-header">
-
-    <div class="header-top">
-
-        <div class="header-title">
-
-            <h1>Hasil Kuis</h1>
-
-            <p>
-                Monitoring hasil evaluasi kuis siswa secara real-time.
-            </p>
-
+            {{-- EXPORT PDF DIHAPUS --}}
+            <div class="header-action">
+                <a href="{{ route('hasil-kuis.excel') }}"
+                   class="download-btn">
+                    <i data-lucide="download"></i>
+                    Export Excel
+                </a>
+            </div>
         </div>
-
-        <div class="header-action">
-
-            <!-- Export PDF -->
-            <a href="{{ route('hasil-kuis.pdf') }}" class="export-btn">
-                <i data-lucide="file-text"></i>
-                Export PDF
-            </a>
-
-            <!-- Download Rekap -->
-            <a href="{{ route('hasil-kuis.download') }}" class="download-btn">
-                <i data-lucide="download"></i>
-                Download Rekap
-            </a>
-
-        </div>
-
     </div>
 
-</div>
-
-
-
-    <!-- ================= CARD ================= -->
-
+    {{-- STATISTIK --}}
     <div class="cards">
 
-        <div class="card">
-
-            <div class="card-title">
-
-                Total Peserta
-
-            </div>
-
+        <div class="stat-card">
+            <div class="card-title">Total Peserta</div>
             <div class="card-value">
-
-                1.520
-
+                {{ number_format($totalPeserta ?? 0, 0, ',', '.') }}
             </div>
-
-            <div class="card-growth">
-
-                ↑ 12% dibanding bulan lalu
-
-            </div>
-
-            <div class="card-icon icon-blue">
-
+            <div class="card-growth">Siswa mengikuti kuis</div>
+            <div class="card-icon">
                 <i data-lucide="users"></i>
-
             </div>
-
         </div>
 
-
-        <div class="card">
-
-            <div class="card-title">
-
-                Rata-rata Nilai
-
-            </div>
-
+        <div class="stat-card">
+            <div class="card-title">Rata-rata Nilai</div>
             <div class="card-value">
-
-                84
-
+                {{ number_format((float) ($rataRata ?? 0), 1, ',', '.') }}
             </div>
-
-            <div class="card-growth">
-
-                ↑ 5%
-
+            <div class="card-growth">Rata-rata skor pengerjaan</div>
+            <div class="card-icon">
+                <i data-lucide="trending-up"></i>
             </div>
-
-            <div class="card-icon icon-green">
-
-                <i data-lucide="graduation-cap"></i>
-
-            </div>
-
         </div>
 
-
-        <div class="card">
-
-            <div class="card-title">
-
-                Nilai Tertinggi
-
-            </div>
-
+        <div class="stat-card">
+            <div class="card-title">Nilai Tertinggi</div>
             <div class="card-value">
-
-                100
-
+                {{ number_format((float) ($nilaiTertinggi ?? 0), 1, ',', '.') }}
             </div>
-
-            <div class="card-growth">
-
-                Sangat Baik
-
+            <div class="card-growth">Skor tertinggi yang diperoleh</div>
+            <div class="card-icon">
+                <i data-lucide="award"></i>
             </div>
-
-            <div class="card-icon icon-yellow">
-
-                <i data-lucide="trophy"></i>
-
-            </div>
-
         </div>
 
-
-        <div class="card">
-
-            <div class="card-title">
-
-                Tingkat Kelulusan
-
-            </div>
-
+        <div class="stat-card">
+            <div class="card-title">Tingkat Kelulusan</div>
             <div class="card-value">
-
-                92%
-
+                {{ number_format((float) ($kelulusan ?? 0), 1, ',', '.') }}%
             </div>
-
             <div class="card-growth">
-
-                Target tercapai
-
+                {{ number_format($jumlahLulus ?? 0, 0, ',', '.') }}
+                hasil lulus
             </div>
-
-            <div class="card-icon icon-purple">
-
+            <div class="card-icon">
                 <i data-lucide="badge-check"></i>
-
             </div>
-
         </div>
 
     </div>
 
-
-
-    <!-- ================= CHART ================= -->
-
+    {{-- GRAFIK --}}
     <div class="chart-grid">
 
         <div class="chart-box">
-
             <div class="chart-header">
-
-                <h3>Distribusi Nilai</h3>
-
-                <span class="chart-filter">
-
-                    Semester Genap
-
-                </span>
-
+                <h3>Distribusi Hasil Kuis</h3>
+                <span class="chart-filter">Semua Hasil</span>
             </div>
-
-            <canvas id="pieChart" height="260"></canvas>
-
+            <div class="chart-container">
+                <canvas id="statusChart"></canvas>
+            </div>
         </div>
 
-
-
         <div class="chart-box">
-
             <div class="chart-header">
-
-                <h3>Perkembangan Hasil</h3>
-
-                <span class="chart-filter">
-
-                    6 Bulan Terakhir
-
-                </span>
-
+                <h3>Perkembangan Nilai</h3>
+                <span class="chart-filter">Rata-rata per Bulan</span>
             </div>
-
-            <canvas id="lineChart" height="120"></canvas>
-
+            <div class="chart-container">
+                <canvas id="nilaiChart"></canvas>
+            </div>
         </div>
 
     </div>
 
-
-
-    <!-- ================= TABLE ================= -->
-
+    {{-- TABEL HASIL --}}
     <div class="table-box">
 
         <div class="table-header">
-
             <div>
-
-                <div class="table-title">
-
-                    Detail Hasil Kuis Siswa
-
-                </div>
-
+                <div class="table-title">Daftar Hasil Kuis</div>
                 <div class="table-sub">
-
-                    Daftar hasil pengerjaan kuis seluruh siswa.
-
+                    Hasil pengerjaan kuis yang tersimpan di database
                 </div>
-
             </div>
-
-
 
             <div class="table-tools">
 
-                <input
-                    class="search"
-                    type="text"
-                    placeholder="Cari siswa..."
-                >
+                <div class="search-wrap">
+                    <i data-lucide="search"></i>
+                    <input type="text"
+                           class="search"
+                           id="searchInput"
+                           placeholder="Cari nama siswa atau kuis..."
+                           autocomplete="off">
+                </div>
 
                 <div class="status-filter">
-
-                    <button class="active">
-
+                    <button type="button"
+                            class="active"
+                            data-filter="Semua">
                         Semua
-
                     </button>
 
-                    <button>
-
+                    <button type="button"
+                            data-filter="Lulus">
                         Lulus
-
                     </button>
 
-                    <button>
-
+                    <button type="button"
+                            data-filter="Remedial">
                         Remedial
-
                     </button>
 
+                    <button type="button"
+                            data-filter="Belum">
+                        Belum
+                    </button>
                 </div>
 
             </div>
-
         </div>
 
-
-
-        <table>
-
-            <thead>
-
-            <tr>
-
-                <th>Nama</th>
-
-                <th>Kuis</th>
-
-                <th>Nilai</th>
-
-                <th>Status</th>
-
-                <th>Tanggal</th>
-
-                <th>Aksi</th>
-
-            </tr>
-
-            </thead>
-
-
-
-            <tbody>
-
-            <tr>
-
-                <td>
-
-                    <div class="user">
-
-                        <div class="avatar">
-
-                            AM
-
-                        </div>
-
-                        <div>
-
-                            <div class="name">
-
-                                Arya Mahendra
-
-                            </div>
-
-                            <div class="school">
-
-                                MAN 1 Pekanbaru
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </td>
-
-                <td>
-
-                    Anti Bullying
-
-                </td>
-
-                <td>
-
-                    <b>95</b>
-
-                </td>
-
-                <td>
-
-                    <span class="badge lulus">
-
-                        Lulus
-
-                    </span>
-
-                </td>
-
-                <td>
-
-                    03 Jul 2026
-
-                </td>
-
-                <td>
-
-                    <button class="detail-btn">
-
-                        Detail
-
-                    </button>
-
-                </td>
-
-            </tr>
-
-
-
-            <tr>
-
-                <td>
-
-                    <div class="user">
-
-                        <div class="avatar">
-
-                            BP
-
-                        </div>
-
-                        <div>
-
-                            <div class="name">
-
-                                Bima Pratama
-
-                            </div>
-
-                            <div class="school">
-
-                                SMAN 5 Pekanbaru
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </td>
-
-                <td>
-
-                    Perbankan
-
-                </td>
-
-                <td>
-
-                    <b>68</b>
-
-                </td>
-
-                <td>
-
-                    <span class="badge remedial">
-
-                        Remedial
-
-                    </span>
-
-                </td>
-
-                <td>
-
-                    03 Jul 2026
-
-                </td>
-
-                <td>
-
-                    <button class="detail-btn">
-
-                        Detail
-
-                    </button>
-
-                </td>
-
-            </tr>
-
-            <tr>
-
-                <td>
-
-                    <div class="user">
-
-                        <div class="avatar">
-
-                            SN
-
-                        </div>
-
-                        <div>
-
-                            <div class="name">
-
-                                Siti Nurhaliza
-
-                            </div>
-
-                            <div class="school">
-
-                                SMAN 2 Pekanbaru
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </td>
-
-                <td>
-
-                    Kekerasan Seksual
-
-                </td>
-
-                <td>
-
-                    <b>88</b>
-
-                </td>
-
-                <td>
-
-                    <span class="badge lulus">
-
-                        Lulus
-
-                    </span>
-
-                </td>
-
-                <td>
-
-                    02 Jul 2026
-
-                </td>
-
-                <td>
-
-                    <button class="detail-btn">
-
-                        Detail
-
-                    </button>
-
-                </td>
-
-            </tr>
-
-            </tbody>
-
-        </table>
-                <!-- ================= PAGINATION ================= -->
-
-        <div class="pagination">
-
-            <div class="pagination-info">
-
-                Menampilkan <b>1-10</b> dari <b>1.520</b> hasil kuis
-
-            </div>
-
-            <div class="pagination-page">
-
-                <button class="page-btn">
-                    <i data-lucide="chevron-left"></i>
-                </button>
-
-                <button class="page-btn active">1</button>
-                <button class="page-btn">2</button>
-                <button class="page-btn">3</button>
-                <button class="page-btn">4</button>
-
-                <span>...</span>
-
-                <button class="page-btn">152</button>
-
-                <button class="page-btn">
-                    <i data-lucide="chevron-right"></i>
-                </button>
-
-            </div>
-
+        <div class="table-wrapper">
+            <table id="hasilTable">
+                <thead>
+                    <tr>
+                        <th>PESERTA</th>
+                        <th>KUIS</th>
+                        <th>SKOR</th>
+                        <th>STATUS</th>
+                        <th>TANGGAL PENGERJAAN</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @forelse($data as $item)
+                        @php
+                            $nama = $item->nama ?? 'Siswa';
+                            $status = ucfirst(
+                                strtolower($item->status ?? 'Belum')
+                            );
+
+                            if (!in_array($status, ['Lulus', 'Remedial', 'Belum'])) {
+                                $status = 'Belum';
+                            }
+
+                            $tanggal = $item->created_at ?? null;
+                        @endphp
+
+                        <tr data-status="{{ $status }}">
+                            <td>
+                                <div class="user">
+                                    <div class="avatar">
+                                        {{ mb_strtoupper(
+                                            mb_substr($nama, 0, 1)
+                                        ) }}
+                                    </div>
+
+                                    <div>
+                                        <div class="name">
+                                            {{ $nama }}
+                                        </div>
+                                        <div class="school">
+                                            Peserta Kuis
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td>
+                                {{ $item->kuis ?? '-' }}
+                            </td>
+
+                            <td>
+                                <span class="score">
+                                    {{ is_numeric($item->skor ?? null)
+                                        ? number_format((float) $item->skor, 1, ',', '.')
+                                        : '0' }}
+                                </span>
+                            </td>
+
+                            <td>
+                                @if($status === 'Lulus')
+                                    <span class="badge lulus">Lulus</span>
+                                @elseif($status === 'Remedial')
+                                    <span class="badge remedial">Remedial</span>
+                                @else
+                                    <span class="badge belum">Belum</span>
+                                @endif
+                            </td>
+
+                            <td>
+                                @if($tanggal)
+                                    {{ \Illuminate\Support\Carbon::parse($tanggal)->format('d M Y, H:i') }}
+                                @else
+                                    -
+                                @endif
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="5" class="empty-state">
+                                <i data-lucide="clipboard-list"></i>
+                                <div>Belum ada hasil kuis.</div>
+                                <div>
+                                    Hasil akan muncul setelah siswa
+                                    menyelesaikan kuis di aplikasi mobile
+                                    dan datanya tersimpan.
+                                </div>
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
         </div>
+
+        <div class="no-filter-result" id="noFilterResult">
+            Tidak ada hasil yang cocok dengan pencarian atau filter.
+        </div>
+
+        @if($data instanceof \Illuminate\Contracts\Pagination\Paginator
+            || $data instanceof \Illuminate\Contracts\Pagination\LengthAwarePaginator)
+
+            @if($data->count() > 0)
+                <div class="pagination-wrapper">
+                    <div class="pagination-info">
+                        Menampilkan {{ $data->firstItem() }}
+                        – {{ $data->lastItem() }}
+                        dari {{ $data->total() }} hasil
+                    </div>
+
+                    <div>
+                        {{ $data->links() }}
+                    </div>
+                </div>
+            @endif
+        @endif
 
     </div>
-
 </div>
 
-<style>
-
-.pagination{
-
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:22px 25px;
-    border-top:1px solid #edf0f5;
-    background:white;
-
-}
-
-.pagination-info{
-
-    font-size:14px;
-    color:#6B7280;
-
-}
-
-.pagination-page{
-
-    display:flex;
-    align-items:center;
-    gap:10px;
-
-}
-
-.page-btn{
-
-    width:38px;
-    height:38px;
-    border-radius:10px;
-    border:1px solid #E5E7EB;
-    background:white;
-    cursor:pointer;
-    transition:.25s;
-
-}
-
-.page-btn:hover{
-
-    background:#EEF4FF;
-
-}
-
-.page-btn.active{
-
-    background:#081B44;
-    color:white;
-    border-color:#081B44;
-
-}
-
-.page-btn i{
-
-    width:18px;
-    height:18px;
-
-}
-
-@media(max-width:1200px){
-
-.cards{
-
-grid-template-columns:repeat(2,1fr);
-
-}
-
-.chart-grid{
-
-grid-template-columns:1fr;
-
-}
-
-.table-header{
-
-flex-direction:column;
-align-items:flex-start;
-gap:15px;
-
-}
-
-.table-tools{
-
-width:100%;
-flex-wrap:wrap;
-
-}
-
-.search{
-
-width:100%;
-
-}
-
-}
-
-@media(max-width:768px){
-
-.cards{
-
-grid-template-columns:1fr;
-
-}
-
-.header-top{
-
-flex-direction:column;
-align-items:flex-start;
-
-}
-
-.header-action{
-
-width:100%;
-flex-wrap:wrap;
-
-}
-
-.export-btn,
-.download-btn{
-
-width:100%;
-justify-content:center;
-
-}
-
-.table-box{
-
-overflow-x:auto;
-
-}
-
-table{
-
-min-width:900px;
-
-}
-
-}
-
-</style>
-
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
 
 <script>
+document.addEventListener('DOMContentLoaded', function () {
 
-lucide.createIcons();
+    if (window.lucide) {
+        window.lucide.createIcons();
+    }
 
-/* ================= PIE ================= */
+    // PENCARIAN DAN FILTER DIGABUNG
+    const searchInput = document.getElementById('searchInput');
+    const filterButtons = document.querySelectorAll(
+        '.status-filter button'
+    );
+    const rows = document.querySelectorAll(
+        '#hasilTable tbody tr[data-status]'
+    );
+    const noResult = document.getElementById('noFilterResult');
 
-new Chart(document.getElementById("pieChart"),{
+    let activeStatus = 'Semua';
 
-type:"doughnut",
+    function applyFilters() {
+        const keyword = (searchInput?.value || '')
+            .toLocaleLowerCase('id-ID')
+            .trim();
 
-data:{
+        let visibleCount = 0;
 
-labels:[
+        rows.forEach(function (row) {
+            const text = row.innerText.toLocaleLowerCase('id-ID');
+            const status = row.dataset.status;
 
-"Lulus",
+            const matchesKeyword = text.includes(keyword);
+            const matchesStatus =
+                activeStatus === 'Semua' || status === activeStatus;
 
-"Remedial",
+            const visible = matchesKeyword && matchesStatus;
 
-"Belum Mengerjakan"
+            row.style.display = visible ? '' : 'none';
 
-],
+            if (visible) {
+                visibleCount++;
+            }
+        });
 
-datasets:[{
+        if (noResult) {
+            noResult.style.display =
+                rows.length > 0 && visibleCount === 0 ? 'block' : 'none';
+        }
+    }
 
-data:[68,22,10],
+    searchInput?.addEventListener('input', applyFilters);
 
-backgroundColor:[
+    filterButtons.forEach(function (button) {
+        button.addEventListener('click', function () {
+            activeStatus = this.dataset.filter;
 
-"#22C55E",
+            filterButtons.forEach(function (item) {
+                item.classList.toggle('active', item === button);
+            });
 
-"#EF4444",
+            applyFilters();
+        });
+    });
 
-"#CBD5E1"
+    // DISTRIBUSI STATUS DARI CONTROLLER
+    const statusCanvas = document.getElementById('statusChart');
 
-],
+    if (statusCanvas && window.Chart) {
+        const pieData = @json($pieChart ?? [0, 0, 0]);
 
-borderWidth:0
+        new Chart(statusCanvas, {
+            type: 'doughnut',
+            data: {
+                labels: ['Lulus', 'Remedial', 'Belum'],
+                datasets: [{
+                    data: pieData,
+                    backgroundColor: ['#16865B', '#D96F00', '#FFD82B'],
+                    borderWidth: 0,
+                    hoverOffset: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '68%',
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 18,
+                            usePointStyle: true,
+                            font: { size: 11 }
+                        }
+                    }
+                }
+            }
+        });
+    }
 
-}]
+    // RATA-RATA NILAI PER BULAN DARI CONTROLLER
+    const nilaiCanvas = document.getElementById('nilaiChart');
 
-},
+    if (nilaiCanvas && window.Chart) {
+        const bulanData = @json($bulan ?? []);
+        const nilaiData = @json($nilai ?? []);
 
-options:{
-
-plugins:{
-
-legend:{
-
-position:"bottom"
-
-}
-
-},
-
-cutout:"70%"
-
-}
+        new Chart(nilaiCanvas, {
+            type: 'line',
+            data: {
+                labels: bulanData,
+                datasets: [{
+                    label: 'Rata-rata Nilai',
+                    data: nilaiData,
+                    borderColor: '#2B3056',
+                    backgroundColor: 'rgba(43,48,86,.08)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: .35,
+                    pointRadius: 4,
+                    pointHoverRadius: 6,
+                    pointBackgroundColor: '#FFD82B',
+                    pointBorderColor: '#2B3056',
+                    pointBorderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    intersect: false,
+                    mode: 'index'
+                },
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        ticks: {
+                            font: { size: 10 },
+                            color: '#777A80'
+                        },
+                        grid: { color: '#EEF0F4' }
+                    },
+                    x: {
+                        ticks: {
+                            font: { size: 10 },
+                            color: '#777A80'
+                        },
+                        grid: { display: false }
+                    }
+                }
+            }
+        });
+    }
 
 });
-
-
-/* ================= LINE ================= */
-
-new Chart(document.getElementById("lineChart"),{
-
-type:"line",
-
-data:{
-
-labels:[
-
-"Jan",
-
-"Feb",
-
-"Mar",
-
-"Apr",
-
-"Mei",
-
-"Jun",
-
-"Jul"
-
-],
-
-datasets:[{
-
-label:"Nilai Rata-rata",
-
-data:[72,76,79,82,85,87,91],
-
-borderColor:"#081B44",
-
-backgroundColor:"rgba(8,27,68,.08)",
-
-fill:true,
-
-borderWidth:3,
-
-pointRadius:5,
-
-pointBackgroundColor:"#081B44",
-
-tension:.4
-
-}]
-
-},
-
-options:{
-
-responsive:true,
-
-plugins:{
-
-legend:{
-
-display:false
-
-}
-
-},
-
-scales:{
-
-y:{
-
-beginAtZero:false,
-
-min:60,
-
-max:100,
-
-grid:{
-
-color:"#EEF2F7"
-
-}
-
-},
-
-x:{
-
-grid:{
-
-display:false
-
-}
-
-}
-
-}
-
-}
-
-});
-
 </script>
 
 @endsection

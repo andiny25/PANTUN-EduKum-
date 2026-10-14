@@ -13,19 +13,20 @@ return new class extends Migration
             $table->id();
 
             $table->string('judul');
-            $table->string('kategori');
-            $table->string('paket_penyuluhan');
 
-            $table->integer('jumlah_soal');
+            $table->foreignId('kategori_id')
+                ->constrained('kategoris')
+                ->cascadeOnDelete();
+
+            $table->integer('jumlah_soal')->default(0);
 
             $table->enum('status', [
                 'Aktif',
                 'Draft',
                 'Nonaktif'
-            ]);
+            ])->default('Draft');
 
             $table->timestamps();
-
         });
     }
 

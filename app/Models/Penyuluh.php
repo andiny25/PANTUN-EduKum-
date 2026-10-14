@@ -9,13 +9,11 @@ class Penyuluh extends Model
     protected $table = 'penyuluhs';
 
     protected $fillable = [
-
         'nama',
         'email',
         'no_hp',
         'jabatan',
         'instansi',
         'status',
-        'foto'
     ];
 }

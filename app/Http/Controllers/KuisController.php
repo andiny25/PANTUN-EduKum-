@@ -4,126 +4,192 @@ namespace App\Http\Controllers;
 
 use App\Models\Kuis;
 use App\Models\Soal;
+use App\Models\Kategori;
 use Illuminate\Http\Request;
+use App\Models\PaketPenyuluhan;
 
 class KuisController extends Controller
 {
-
-    // =========================
+    // =====================================================
     // HALAMAN LIST KUIS
-    // =========================
+    // =====================================================
+
     public function index()
     {
-        $kuis = Kuis::latest()->get();
+        $kuis = Kuis::with('kategori')
+            ->latest()
+            ->get();
 
         return view('kuis.index', compact('kuis'));
     }
 
-    // =========================
+
+    // =====================================================
     // FORM TAMBAH KUIS
-    // =========================
+    // =====================================================
+
     public function create()
     {
-        return view('kuis.create');
+        $kategoris = Kategori::orderBy('nama_kategori')->get();
+
+        return view('kuis.create', compact('kategoris'));
     }
 
-    // =========================
+
+    // =====================================================
     // SIMPAN DATA KUIS
-    // =========================
+    // =====================================================
+
     public function store(Request $request)
     {
-
         $request->validate([
-            'judul'             => 'required',
-            'kategori'          => 'required',
-            'paket_penyuluhan'  => 'required',
-            'jumlah_soal'       => 'required|numeric',
-            'status'            => 'required',
+            'judul'       => 'required|string|max:255',
+            'kategori_id' => 'required|exists:kategoris,id',
+            'jumlah_soal' => 'required|integer|min:1',
+            'status'      => 'required|in:Aktif,Draft,Nonaktif',
         ]);
 
-        Kuis::create([
-            'judul'             => $request->judul,
-            'kategori'          => $request->kategori,
-            'paket_penyuluhan'  => $request->paket_penyuluhan,
-            'jumlah_soal'       => $request->jumlah_soal,
-            'status'            => $request->status,
+        $kuis = Kuis::create([
+            'judul'       => $request->judul,
+            'kategori_id' => $request->kategori_id,
+            'jumlah_soal' => $request->jumlah_soal,
+            'status'      => $request->status,
         ]);
 
-        return redirect('/kuis')
+        // Membuat Paket Penyuluhan berdasarkan kategori
+        PaketPenyuluhan::firstOrCreate([
+            'kategori_id' => $kuis->kategori_id
+        ]);
+
+        return redirect()
+            ->route('kuis.index')
             ->with('success', 'Kuis berhasil ditambahkan');
     }
 
-    // =========================
+
+    // =====================================================
     // DETAIL KUIS + DAFTAR SOAL
-    // =========================
+    // =====================================================
+
     public function show($id)
     {
+        $kuis = Kuis::with('kategori')
+            ->findOrFail($id);
 
-        // ambil data kuis
-        $kuis = Kuis::findOrFail($id);
-
-        // ambil semua soal berdasarkan kuis
         $soal = Soal::where('kuis_id', $id)
-                    ->latest()
-                    ->get();
+            ->latest()
+            ->get();
 
         return view('kuis.show', compact('kuis', 'soal'));
     }
 
-    // =========================
+
+    // =====================================================
     // FORM EDIT KUIS
-    // =========================
+    // =====================================================
+
     public function edit($id)
     {
         $kuis = Kuis::findOrFail($id);
 
-        return view('kuis.edit', compact('kuis'));
+        $kategoris = Kategori::orderBy('nama_kategori')->get();
+
+        return view('kuis.edit', [
+            'kuis' => $kuis,
+            'kategoris' => $kategoris
+        ]);
     }
 
-    // =========================
+
+    // =====================================================
     // UPDATE DATA KUIS
-    // =========================
+    // =====================================================
+
     public function update(Request $request, $id)
     {
-
         $request->validate([
-            'judul'             => 'required',
-            'kategori'          => 'required',
-            'paket_penyuluhan'  => 'required',
-            'jumlah_soal'       => 'required|numeric',
-            'status'            => 'required',
+            'judul'       => 'required|string|max:255',
+            'kategori_id' => 'required|exists:kategoris,id',
+            'jumlah_soal' => 'required|integer|min:1',
+            'status'      => 'required|in:Aktif,Draft,Nonaktif',
         ]);
 
         $kuis = Kuis::findOrFail($id);
 
         $kuis->update([
-            'judul'             => $request->judul,
-            'kategori'          => $request->kategori,
-            'paket_penyuluhan'  => $request->paket_penyuluhan,
-            'jumlah_soal'       => $request->jumlah_soal,
-            'status'            => $request->status,
+            'judul'       => $request->judul,
+            'kategori_id' => $request->kategori_id,
+            'jumlah_soal' => $request->jumlah_soal,
+            'status'      => $request->status,
         ]);
 
-        return redirect('/kuis')
-            ->with('success', 'Kuis berhasil diupdate');
+        return redirect()
+            ->route('kuis.index')
+            ->with('success', 'Kuis berhasil diperbarui');
     }
 
-    // =========================
-    // HAPUS KUIS
-    // =========================
-    public function destroy($id)
-    {
 
+    // =====================================================
+    // PREVIEW KUIS
+    // =====================================================
+
+    public function preview($id)
+    {
+        $kuis = Kuis::with('kategori')
+            ->findOrFail($id);
+
+        $soal = Soal::where('kuis_id', $id)
+            ->orderBy('id', 'asc')
+            ->get();
+
+        return view('kuis.preview', compact('kuis', 'soal'));
+    }
+
+
+    // =====================================================
+    // PUBLISH KUIS
+    // =====================================================
+
+    public function publish($id)
+    {
         $kuis = Kuis::findOrFail($id);
 
-        // hapus semua soal yang terkait
-        Soal::where('kuis_id', $id)->delete();
+        // Cek apakah sudah ada soal
+        $jumlahSoal = Soal::where('kuis_id', $id)->count();
 
-        // hapus kuis
-        $kuis->delete();
+        if ($jumlahSoal == 0) {
+            return redirect()
+                ->back()
+                ->with('error', 'Kuis belum dapat dipublish karena belum memiliki soal.');
+        }
 
-        return redirect('/kuis')
-            ->with('success', 'Kuis berhasil dihapus');
+        // Update status menjadi Aktif
+        $kuis->update([
+            'status' => 'Aktif'
+        ]);
+
+        return redirect()
+            ->back()
+            ->with('success', 'Kuis berhasil dipublish dan sekarang berstatus Aktif.');
     }
 
+
+    // =====================================================
+    // HAPUS KUIS
+    // =====================================================
+
+    public function destroy($id)
+    {
+        $kuis = Kuis::findOrFail($id);
+
+        // Hapus semua soal yang berkaitan
+        Soal::where('kuis_id', $id)->delete();
+
+        // Hapus kuis
+        $kuis->delete();
+
+        return redirect()
+            ->route('kuis.index')
+            ->with('success', 'Kuis berhasil dihapus');
+    }
 }

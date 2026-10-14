@@ -1,7 +1,8 @@
-```php
 @extends('layouts.sidebar')
 
 @section('content')
+
+<script src="https://unpkg.com/lucide@latest"></script>
 
 <style>
 
@@ -12,43 +13,56 @@
     font-family:'Poppins', sans-serif;
 }
 
+body{
+    background:#f3f4f8;
+}
+
 .content{
-    padding:28px;
-    background:#f4f5f9;
+    padding:26px 22px;
     min-height:100vh;
 }
 
-/* ================= HEADER ================= */
-
-.page-header{
-    margin-bottom:24px;
-}
-
-.header-title h1{
-    font-size:40px;
-    font-weight:700;
-    color:#13234a;
-    margin-bottom:4px;
-}
-
-.header-title p{
-    color:#6b7280;
-    font-size:14px;
-}
-
-/* ================= FORM CARD ================= */
-
 .form-card{
-    background:white;
-    border-radius:20px;
+    max-width:750px;
+    margin:0 auto;
     padding:28px;
+    background:white;
+    border-radius:18px;
     border:1px solid #ececf2;
-    max-width:900px;
 }
 
-/* ================= FORM ================= */
+.form-header{
+    margin-bottom:25px;
+}
 
-.form-grid{
+.form-title{
+    color:#13234a;
+    font-size:26px;
+    font-weight:700;
+    margin-bottom:5px;
+}
+
+.form-subtitle{
+    color:#6b7280;
+    font-size:13px;
+}
+
+.info-box{
+    background:#f5f6fb;
+    border:1px solid #e5e7eb;
+    border-radius:11px;
+    padding:13px 15px;
+    margin-bottom:22px;
+    color:#64748b;
+    font-size:12px;
+    line-height:1.6;
+}
+
+.info-box strong{
+    color:#13234a;
+}
+
+.form-row{
     display:grid;
     grid-template-columns:1fr 1fr;
     gap:20px;
@@ -57,258 +71,390 @@
 .form-group{
     display:flex;
     flex-direction:column;
+    margin-bottom:20px;
 }
 
-.form-group.full{
-    grid-column:1/3;
-}
-
-label{
-    font-size:13px;
-    font-weight:600;
-    color:#374151;
+.form-group label{
+    font-size:12px;
+    font-weight:700;
     margin-bottom:8px;
+    color:#374151;
 }
 
-input,
-select,
-textarea{
+.form-group input,
+.form-group select{
     width:100%;
-    border:1px solid #dcdfe7;
-    border-radius:12px;
-    padding:12px 14px;
+    border:1px solid #e5e7eb;
+    border-radius:10px;
+    padding:12px;
     font-size:13px;
     outline:none;
     background:white;
+    color:#374151;
     transition:.2s;
 }
 
-input:focus,
-select:focus,
-textarea:focus{
-    border-color:#081b44;
-    box-shadow:0 0 0 3px rgba(8,27,68,.08);
+.form-group input:focus,
+.form-group select:focus{
+    border-color:#2d3165;
+    box-shadow:0 0 0 3px rgba(45,49,101,.08);
 }
 
-textarea{
-    resize:none;
-    min-height:120px;
+.error-message{
+    color:#dc2626;
+    font-size:11px;
+    margin-top:5px;
 }
 
-/* ================= BUTTON ================= */
+.error-box{
+    background:#fee2e2;
+    border:1px solid #fecaca;
+    color:#b91c1c;
+    padding:13px 15px;
+    border-radius:10px;
+    margin-bottom:20px;
+    font-size:12px;
+}
+
+.error-box ul{
+    margin:0;
+    padding-left:18px;
+}
+
+.alert-error{
+    background:#fee2e2;
+    color:#991b1b;
+    border:1px solid #fecaca;
+    padding:12px 15px;
+    border-radius:10px;
+    margin-bottom:18px;
+    font-size:13px;
+}
 
 .form-action{
-    margin-top:26px;
+    margin-top:25px;
     display:flex;
-    gap:12px;
+    justify-content:flex-end;
+    gap:10px;
 }
 
 .btn{
     height:44px;
     padding:0 18px;
-    border:none;
     border-radius:10px;
     font-size:13px;
     font-weight:600;
     cursor:pointer;
     display:flex;
     align-items:center;
+    justify-content:center;
     gap:8px;
     transition:.2s;
-}
-
-.btn-primary{
-    background:#081b44;
-    color:white;
-}
-
-.btn-primary:hover{
-    background:#061532;
 }
 
 .btn-secondary{
     background:#eef0f5;
     color:#374151;
+    text-decoration:none;
 }
 
 .btn-secondary:hover{
-    background:#dde2ea;
+    background:#e2e5ec;
 }
 
-.btn i{
+.btn-primary{
+    background:#2d3165;
+    color:white;
+    border:none;
+    box-shadow:0 4px 10px rgba(45,49,101,.15);
+}
+
+.btn-primary:hover{
+    background:#252957;
+}
+
+.btn-primary i{
     width:16px;
     height:16px;
 }
 
-/* ================= RESPONSIVE ================= */
+@media(max-width:700px){
 
-@media(max-width:768px){
-
-    .form-grid{
-        grid-template-columns:1fr;
+    .content{
+        padding:20px 15px;
     }
 
-    .form-group.full{
-        grid-column:auto;
+    .form-card{
+        padding:20px;
+    }
+
+    .form-row{
+        grid-template-columns:1fr;
+        gap:0;
+    }
+
+    .form-action{
+        flex-direction:column-reverse;
+    }
+
+    .btn{
+        width:100%;
     }
 
 }
 
 </style>
 
+
 <div class="content">
 
-    <!-- HEADER -->
-    <div class="page-header">
+    <div class="form-card">
 
-        <div class="header-title">
+        {{-- HEADER --}}
 
-            <h1>Buat Kuis Baru</h1>
+        <div class="form-header">
 
-            <p>
+            <h2 class="form-title">
+                Buat Kuis Baru
+            </h2>
+
+            <p class="form-subtitle">
                 Tambahkan data kuis literasi hukum baru
             </p>
 
         </div>
 
-    </div>
 
-    <!-- FORM -->
-    <div class="form-card">
 
-        <form action="{{ route('kuis.store') }}"
-              method="POST">
+        {{-- ERROR DARI SESSION --}}
+
+        @if(session('error'))
+
+            <div class="alert-error">
+                {{ session('error') }}
+            </div>
+
+        @endif
+
+
+        {{-- ERROR VALIDASI --}}
+
+        @if($errors->any())
+
+            <div class="error-box">
+
+                <ul>
+
+                    @foreach($errors->all() as $error)
+
+                        <li>
+                            {{ $error }}
+                        </li>
+
+                    @endforeach
+
+                </ul>
+
+            </div>
+
+        @endif
+
+
+        {{-- FORM --}}
+
+        <form
+            action="{{ route('kuis.store') }}"
+            method="POST"
+        >
 
             @csrf
 
-            <div class="form-grid">
 
-                <!-- JUDUL -->
-                <div class="form-group full">
+            {{-- JUDUL --}}
 
-                    <label>Judul Kuis</label>
+            <div class="form-group">
 
-                    <input type="text"
-                           name="judul"
-                           placeholder="Masukkan judul kuis"
-                           required>
+                <label>
+                    JUDUL KUIS
+                </label>
 
-                </div>
+                <input
+                    type="text"
+                    name="judul"
+                    value="{{ old('judul') }}"
+                    placeholder="Contoh: Kesadaran Hukum Sejak Dini"
+                    required
+                >
 
-                <!-- KATEGORI -->
+                @error('judul')
+
+                    <span class="error-message">
+                        {{ $message }}
+                    </span>
+
+                @enderror
+
+            </div>
+
+
+            {{-- KATEGORI + JUMLAH SOAL --}}
+
+            <div class="form-row">
+
+
+                {{-- KATEGORI --}}
+
                 <div class="form-group">
 
-                    <label>Kategori</label>
+                    <label>
+                        KATEGORI
+                    </label>
 
-                    <select name="kategori" required>
+                    <select
+                        name="kategori_id"
+                        required
+                    >
 
                         <option value="">
                             Pilih Kategori
                         </option>
 
-                        <option value="Bullying">
-                            Bullying
-                        </option>
+                        @foreach($kategoris as $kategori)
 
-                        <option value="Narkoba">
-                            Narkoba
-                        </option>
+                            <option
+                                value="{{ $kategori->id }}"
+                                {{ old('kategori_id') == $kategori->id ? 'selected' : '' }}
+                            >
 
-                        <option value="Cyber Crime">
-                            Cyber Crime
-                        </option>
+                                {{ $kategori->nama_kategori }}
 
-                        <option value="Kenakalan Remaja">
-                            Kenakalan Remaja
-                        </option>
+                            </option>
+
+                        @endforeach
 
                     </select>
 
+                    @error('kategori_id')
+
+                        <span class="error-message">
+                            {{ $message }}
+                        </span>
+
+                    @enderror
+
                 </div>
 
-                <!-- PAKET -->
+
+                {{-- JUMLAH SOAL --}}
+
                 <div class="form-group">
 
-                    <label>Paket Penyuluhan</label>
+                    <label>
+                        JUMLAH SOAL
+                    </label>
 
-                    <input type="text"
-                           name="paket_penyuluhan"
-                           placeholder="Masukkan paket penyuluhan">
+                    <input
+                        type="number"
+                        name="jumlah_soal"
+                        value="{{ old('jumlah_soal', 10) }}"
+                        min="1"
+                        max="100"
+                        placeholder="Contoh: 10"
+                        required
+                    >
 
-                </div>
+                    <span
+                        style="
+                            margin-top:5px;
+                            color:#9ca3af;
+                            font-size:11px;
+                        "
+                    >
+                        Tentukan jumlah soal yang harus dibuat.
+                    </span>
 
-                <!-- JUMLAH SOAL -->
-                <div class="form-group">
+                    @error('jumlah_soal')
 
-                    <label>Jumlah Soal</label>
+                        <span class="error-message">
+                            {{ $message }}
+                        </span>
 
-                    <input type="number"
-                           name="jumlah_soal"
-                           placeholder="Contoh: 10"
-                           required>
-
-                </div>
-
-                <!-- STATUS -->
-                <div class="form-group">
-
-                    <label>Status</label>
-
-                    <select name="status">
-
-                        <option value="Aktif">
-                            Aktif
-                        </option>
-
-                        <option value="Draft">
-                            Draft
-                        </option>
-
-                        <option value="Nonaktif">
-                            Nonaktif
-                        </option>
-
-                    </select>
-
-                </div>
-
-                <!-- DESKRIPSI -->
-                <div class="form-group full">
-
-                    <label>Deskripsi Kuis</label>
-
-                    <textarea name="deskripsi"
-                              placeholder="Masukkan deskripsi kuis"></textarea>
+                    @enderror
 
                 </div>
 
             </div>
 
-            <!-- BUTTON -->
+
+            {{-- STATUS --}}
+
+            <div class="form-group">
+
+                <label>
+                    STATUS
+                </label>
+
+                <select
+                    name="status"
+                    required
+                >
+
+                    <option
+                        value="Aktif"
+                        {{ old('status', 'Aktif') == 'Aktif' ? 'selected' : '' }}
+                    >
+                        Aktif
+                    </option>
+
+                    <option
+                        value="Draft"
+                        {{ old('status') == 'Draft' ? 'selected' : '' }}
+                    >
+                        Draft
+                    </option>
+
+                    <option
+                        value="Nonaktif"
+                        {{ old('status') == 'Nonaktif' ? 'selected' : '' }}
+                    >
+                        Nonaktif
+                    </option>
+
+                </select>
+
+                @error('status')
+
+                    <span class="error-message">
+                        {{ $message }}
+                    </span>
+
+                @enderror
+
+            </div>
+
+
+            {{-- BUTTON --}}
+
             <div class="form-action">
 
-                <button type="submit"
-                        class="btn btn-primary">
+                <a
+                    href="{{ route('kuis.index') }}"
+                    class="btn btn-secondary"
+                >
+                    Kembali
+                </a>
 
-                    <i data-lucide="save"></i>
 
-                    Simpan Kuis
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                >
+
+                    <i data-lucide="plus"></i>
+
+                    Buat Kuis
 
                 </button>
-
-                <a href="{{ route('kuis.index') }}"
-                   style="text-decoration:none;">
-
-                    <button type="button"
-                            class="btn btn-secondary">
-
-                        <i data-lucide="arrow-left"></i>
-
-                        Kembali
-
-                    </button>
-
-                </a>
 
             </div>
 
@@ -318,8 +464,22 @@ textarea{
 
 </div>
 
+
 <script>
-lucide.createIcons();
+
+document.addEventListener(
+    'DOMContentLoaded',
+    function(){
+
+        if(typeof lucide !== 'undefined'){
+
+            lucide.createIcons();
+
+        }
+
+    }
+);
+
 </script>
 
 @endsection
