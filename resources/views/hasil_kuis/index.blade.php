@@ -668,7 +668,7 @@
                 <tbody>
                     @forelse($data as $item)
                         @php
-                            $nama = $item->nama ?? 'Siswa';
+                            $nama = $item->nama_siswa ?? 'Siswa';
                             $status = ucfirst(
                                 strtolower($item->status ?? 'Belum')
                             );
@@ -694,8 +694,8 @@
                                             {{ $nama }}
                                         </div>
                                         <div class="school">
-                                            Peserta Kuis
-                                        </div>
+                                                {{ $item->sekolah ?? 'Peserta Kuis' }}
+                                            </div>
                                     </div>
                                 </div>
                             </td>

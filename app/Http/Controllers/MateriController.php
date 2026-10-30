@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Materi;
 use App\Models\Kategori;
 use App\Models\PaketPenyuluhan;
+use App\Models\Notifikasi;
 use Illuminate\Support\Facades\Storage;
 
 class MateriController extends Controller
@@ -154,6 +155,20 @@ class MateriController extends Controller
 
             }
         }
+
+
+        /* =================================================
+           BUAT NOTIFIKASI MATERI BARU
+        ================================================= */
+
+        Notifikasi::create([
+            'judul' => 'Materi baru ditambahkan',
+            'pesan' => 'Materi "' . $materi->judul . '" berhasil ditambahkan.',
+            'tipe' => 'materi',
+            'target_role' => 'all',
+            'url' => url('/materi'),
+            'dibaca' => false,
+        ]);
 
 
         return redirect('/materi')

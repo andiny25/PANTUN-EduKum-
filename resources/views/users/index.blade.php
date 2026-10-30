@@ -3,11 +3,7 @@
 @section('content')
 
 <style>
-
-/* =====================================================
-   PAGE
-===================================================== */
-
+/* PAGE */
 .page-wrapper {
     padding: 10px;
     background: #F5F6F8;
@@ -27,11 +23,7 @@
     margin-bottom: 0;
 }
 
-
-/* =====================================================
-   FILTER CARD
-===================================================== */
-
+/* FILTER CARD */
 .filter-card {
     background: #fff;
     border-radius: 18px;
@@ -101,11 +93,7 @@
     color: #111827;
 }
 
-
-/* =====================================================
-   USER CARD
-===================================================== */
-
+/* USER CARD */
 .user-card {
     background: #fff;
     border-radius: 18px;
@@ -136,11 +124,7 @@
     border-radius: 999px;
 }
 
-
-/* =====================================================
-   TABLE
-===================================================== */
-
+/* TABLE */
 .table-responsive {
     overflow-x: auto;
 }
@@ -180,11 +164,7 @@
     border-bottom: none;
 }
 
-
-/* =====================================================
-   USER
-===================================================== */
-
+/* USER */
 .user-info {
     display: flex;
     align-items: center;
@@ -212,11 +192,7 @@
     font-size: 9px;
 }
 
-
-/* =====================================================
-   STATUS
-===================================================== */
-
+/* STATUS */
 .status-active {
     background: #DCFCE7;
     color: #16A34A;
@@ -247,14 +223,11 @@
     display: inline-block;
 }
 
-
-/* =====================================================
-   ACTION
-===================================================== */
-
+/* ACTION */
 .action-wrapper {
     display: flex;
-    gap: 5px;
+    justify-content: center;
+    align-items: center;
 }
 
 .action-btn {
@@ -268,6 +241,9 @@
     align-items: center;
     justify-content: center;
     transition: .2s;
+    position: relative;
+    z-index: 2;
+    pointer-events: auto;
 }
 
 .action-btn svg {
@@ -284,15 +260,7 @@
     color: #2D3165;
 }
 
-.action-delete {
-    color: #DC2626;
-}
-
-
-/* =====================================================
-   EMPTY
-===================================================== */
-
+/* EMPTY */
 .empty-data {
     padding: 45px 20px !important;
     text-align: center;
@@ -327,11 +295,7 @@
     margin-top: 4px;
 }
 
-
-/* =====================================================
-   ACTIVITY CARD
-===================================================== */
-
+/* ACTIVITY CARD */
 .activity-card {
     background: #fff;
     border-radius: 18px;
@@ -365,11 +329,7 @@
     text-decoration: underline;
 }
 
-
-/* =====================================================
-   ACTIVITY ITEM
-===================================================== */
-
+/* ACTIVITY ITEM */
 .activity-item {
     display: flex;
     gap: 11px;
@@ -414,11 +374,7 @@
     margin-top: 3px;
 }
 
-
-/* =====================================================
-   PAGINATION
-===================================================== */
-
+/* PAGINATION */
 .pagination-wrapper {
     margin-top: 20px;
     display: flex;
@@ -441,11 +397,7 @@
     color: #fff;
 }
 
-
-/* =====================================================
-   MODAL
-===================================================== */
-
+/* MODAL */
 .modal-content {
     border: none;
     border-radius: 18px;
@@ -521,13 +473,32 @@
     font-weight: 600;
 }
 
+/* FALLBACK MODAL */
+#userDetailModal.fallback-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 1055;
+    overflow-y: auto;
+    background: rgba(0, 0, 0, .45);
+    padding: 20px;
+}
 
-/* =====================================================
-   RESPONSIVE
-===================================================== */
+#userDetailModal.fallback-modal.show {
+    display: block;
+}
 
+#userDetailModal.fallback-modal .modal-dialog {
+    max-width: 500px;
+    margin: 8vh auto;
+}
+
+body.modal-open-fallback {
+    overflow: hidden;
+}
+
+/* RESPONSIVE */
 @media (max-width: 1200px) {
-
     .col-lg-8 {
         width: 100%;
     }
@@ -536,11 +507,9 @@
         width: 100%;
         margin-top: 15px;
     }
-
 }
 
 @media (max-width: 768px) {
-
     .page-wrapper {
         padding: 5px;
     }
@@ -558,40 +527,29 @@
     .detail-grid {
         grid-template-columns: 1fr;
     }
-
 }
-
 </style>
-    <div>
 
-        <h1 class="page-title">
-            Daftar Pengguna
-        </h1>
+<div class="page-wrapper">
+
+    <!-- JUDUL HALAMAN -->
+    <div>
+        <h1 class="page-title">Daftar Pengguna</h1>
 
         <p class="page-subtitle">
             Kelola dan monitor data siswa peserta literasi hukum dari aplikasi mobile.
         </p>
-
     </div>
 
-
-    <!-- =====================================================
-         FILTER
-    ====================================================== -->
-
+    <!-- FILTER -->
     <div class="filter-card">
 
         <form method="GET" action="{{ route('users.index') }}">
 
             <div class="row g-3">
 
-                <!-- SEARCH -->
-
                 <div class="col-md-4">
-
-                    <label class="filter-label">
-                        Cari Pengguna
-                    </label>
+                    <label class="filter-label">Cari Pengguna</label>
 
                     <input
                         type="text"
@@ -600,102 +558,63 @@
                         class="form-control search-input"
                         placeholder="Nama atau email..."
                     >
-
                 </div>
 
-
-                <!-- SEKOLAH -->
-
                 <div class="col-md-3">
+                    <label class="filter-label">Sekolah</label>
 
-                    <label class="filter-label">
-                        Sekolah
-                    </label>
-
-                    <select
-                        name="sekolah"
-                        class="form-select"
-                    >
-
-                        <option value="">
-                            Semua Sekolah
-                        </option>
+                    <select name="sekolah" class="form-select">
+                        <option value="">Semua Sekolah</option>
 
                         @foreach($sekolahs ?? [] as $sekolah)
-
                             <option
                                 value="{{ $sekolah }}"
                                 {{ request('sekolah') == $sekolah ? 'selected' : '' }}
                             >
                                 {{ $sekolah }}
                             </option>
-
                         @endforeach
-
                     </select>
-
                 </div>
 
-
-                <!-- STATUS -->
-
                 <div class="col-md-3">
+                    <label class="filter-label">Status</label>
 
-                    <label class="filter-label">
-                        Status
-                    </label>
+                    <select name="status" class="form-select">
+                        <option value="">Semua Status</option>
 
-                    <select
-                        name="status"
-                        class="form-select"
-                    >
-
-                        <option value="">
-                            Semua Status
-                        </option>
-
-                        <option
-                            value="aktif"
-                            {{ request('status') == 'aktif' ? 'selected' : '' }}
-                        >
+                        <option value="aktif"
+                            {{ request('status') == 'aktif' ? 'selected' : '' }}>
                             Aktif
                         </option>
 
-                        <option
-                            value="tidak_aktif"
-                            {{ request('status') == 'tidak_aktif' ? 'selected' : '' }}
-                        >
+                        <option value="tidak_aktif"
+                            {{ request('status') == 'tidak_aktif' ? 'selected' : '' }}>
                             Tidak Aktif
                         </option>
-
                     </select>
+                </div>
 
+                <div class="col-md-2">
+                    <label class="filter-label">&nbsp;</label>
+
+                    <button type="submit" class="filter-btn">
+                        Cari Data
+                    </button>
                 </div>
 
             </div>
 
         </form>
-
     </div>
 
-
-    <!-- =====================================================
-         MAIN CONTENT
-    ====================================================== -->
-
+    <!-- MAIN CONTENT -->
     <div class="row g-3">
 
-
-        <!-- =================================================
-             USER TABLE
-        ================================================== -->
-
+        <!-- TABEL PENGGUNA -->
         <div class="col-lg-8">
 
             <div class="user-card">
-
-
-                <!-- HEADER -->
 
                 <div class="user-card-header">
 
@@ -704,54 +623,25 @@
                     </h4>
 
                     <span class="total-user">
-
-                        Total:
-                        {{ $users->total() ?? 0 }}
-                        pengguna
-
+                        Total: {{ $users->total() ?? 0 }} pengguna
                     </span>
 
                 </div>
-
-
-                <!-- TABLE -->
 
                 <div class="table-responsive">
 
                     <table class="table-modern">
 
                         <thead>
-
                             <tr>
-
-                                <th>
-                                    SISWA
-                                </th>
-
-                                <th>
-                                    SEKOLAH
-                                </th>
-
-                                <th>
-                                    KELAS
-                                </th>
-
-                                <th>
-                                    STATUS
-                                </th>
-
-                                <th>
-                                    BERGABUNG
-                                </th>
-
-                                <th>
-                                    AKSI
-                                </th>
-
+                                <th>SISWA</th>
+                                <th>SEKOLAH</th>
+                                <th>KELAS</th>
+                                <th>STATUS</th>
+                                <th>BERGABUNG</th>
+                                <th style="text-align:center;">AKSI</th>
                             </tr>
-
                         </thead>
-
 
                         <tbody>
 
@@ -759,11 +649,8 @@
 
                             <tr>
 
-
                                 <!-- SISWA -->
-
                                 <td>
-
                                     <div class="user-info">
 
                                         <img
@@ -773,168 +660,76 @@
                                         >
 
                                         <div>
-
                                             <div class="user-name">
-
                                                 {{ $user->nama ?? $user->name ?? '-' }}
-
                                             </div>
 
                                             <div class="user-email">
-
                                                 {{ $user->email ?? '-' }}
-
                                             </div>
-
                                         </div>
 
                                     </div>
-
                                 </td>
-
 
                                 <!-- SEKOLAH -->
-
-                                <td>
-
-                                    {{ $user->sekolah ?? '-' }}
-
-                                </td>
-
+                                <td>{{ $user->sekolah ?? '-' }}</td>
 
                                 <!-- KELAS -->
-
-                                <td>
-
-                                    {{ $user->kelas ?? '-' }}
-
-                                </td>
-
+                                <td>{{ $user->kelas ?? '-' }}</td>
 
                                 <!-- STATUS -->
-
                                 <td>
-
                                     @if(($user->status ?? '') === 'aktif')
-
-                                        <span class="status-active">
-                                            Aktif
-                                        </span>
-
+                                        <span class="status-active">Aktif</span>
                                     @elseif(($user->status ?? '') === 'tidak_aktif')
-
-                                        <span class="status-inactive">
-                                            Tidak Aktif
-                                        </span>
-
+                                        <span class="status-inactive">Tidak Aktif</span>
                                     @else
-
                                         <span class="status-default">
                                             {{ $user->status ?? 'Tidak diketahui' }}
                                         </span>
-
                                     @endif
-
                                 </td>
-
 
                                 <!-- BERGABUNG -->
-
                                 <td>
-
-                                    @if($user->created_at)
-
-                                        {{ $user->created_at->format('d M Y') }}
-
-                                    @else
-
-                                        -
-
-                                    @endif
-
+                                    {{ $user->created_at
+                                        ? $user->created_at->format('d M Y')
+                                        : '-' }}
                                 </td>
 
-
-                                <!-- AKSI -->
-
+                                <!-- AKSI: DETAIL -->
                                 <td>
-
                                     <div class="action-wrapper">
-
-
-                                        <!-- DETAIL -->
 
                                         <button
                                             type="button"
                                             class="action-btn action-view"
                                             title="Lihat Detail"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#userDetailModal"
+                                            aria-label="Lihat detail pengguna"
+                                            onclick="showUserDetail(this)"
                                             data-name="{{ $user->nama ?? $user->name ?? '-' }}"
                                             data-email="{{ $user->email ?? '-' }}"
                                             data-sekolah="{{ $user->sekolah ?? '-' }}"
                                             data-kelas="{{ $user->kelas ?? '-' }}"
                                             data-status="{{ $user->status ?? '-' }}"
                                             data-created="{{ $user->created_at ? $user->created_at->format('d M Y') : '-' }}"
-                                            onclick="showUserDetail(this)"
                                         >
-
                                             <i data-lucide="eye"></i>
-
                                         </button>
 
-
-                                        <!-- HAPUS -->
-
-                                        @if(Route::has('users.destroy'))
-
-                                            <form
-                                                action="{{ route('users.destroy', $user->id) }}"
-                                                method="POST"
-                                                onsubmit="return confirm('Apakah kamu yakin ingin menghapus pengguna ini?')"
-                                                style="display:inline;"
-                                            >
-
-                                                @csrf
-
-                                                @method('DELETE')
-
-                                                <button
-                                                    type="submit"
-                                                    class="action-btn action-delete"
-                                                    title="Hapus"
-                                                >
-
-                                                    <i data-lucide="trash-2"></i>
-
-                                                </button>
-
-                                            </form>
-
-                                        @endif
-
-
                                     </div>
-
                                 </td>
 
-
                             </tr>
-
 
                         @empty
 
                             <tr>
-
-                                <td
-                                    colspan="6"
-                                    class="empty-data"
-                                >
+                                <td colspan="6" class="empty-data">
 
                                     <div class="empty-icon">
-
                                         <i data-lucide="users"></i>
-
                                     </div>
 
                                     <div class="empty-title">
@@ -946,7 +741,6 @@
                                     </div>
 
                                 </td>
-
                             </tr>
 
                         @endforelse
@@ -957,33 +751,21 @@
 
                 </div>
 
-
                 <!-- PAGINATION -->
-
                 @if($users instanceof \Illuminate\Pagination\LengthAwarePaginator)
-
                     <div class="pagination-wrapper">
-
                         {{ $users->withQueryString()->links() }}
-
                     </div>
-
                 @endif
-
 
             </div>
 
         </div>
 
-
-        <!-- =================================================
-             AKTIVITAS
-        ================================================== -->
-
+        <!-- AKTIVITAS TERBARU -->
         <div class="col-lg-4">
 
             <div class="activity-card">
-
 
                 <div class="activity-header">
 
@@ -991,15 +773,11 @@
                         Aktivitas Terbaru
                     </h5>
 
-                    <span
-                        class="activity-link"
-                        style="cursor: default;"
-                    >
+                    <span class="activity-link" style="cursor: default;">
                         Mobile
                     </span>
 
                 </div>
-
 
                 @if(isset($activities) && count($activities) > 0)
 
@@ -1007,55 +785,36 @@
 
                         <div class="activity-item">
 
-
                             <div class="activity-icon">
 
                                 @if(($activity->type ?? '') === 'quiz')
-
                                     <i data-lucide="trophy"></i>
-
                                 @elseif(($activity->type ?? '') === 'materi')
-
                                     <i data-lucide="book-open"></i>
-
                                 @elseif(($activity->type ?? '') === 'login')
-
                                     <i data-lucide="log-in"></i>
-
                                 @else
-
                                     <i data-lucide="activity"></i>
-
                                 @endif
 
                             </div>
 
-
                             <div class="activity-content">
 
                                 <strong>
-
                                     {{ $activity->nama ?? $activity->user_name ?? 'Pengguna' }}
-
                                 </strong>
 
                                 <br>
 
                                 {{ $activity->description ?? 'Melakukan aktivitas pada aplikasi.' }}
 
-
                                 <div class="activity-time">
-
                                     @if(isset($activity->created_at))
-
                                         {{ \Carbon\Carbon::parse($activity->created_at)->diffForHumans() }}
-
                                     @else
-
                                         Baru saja
-
                                     @endif
-
                                 </div>
 
                             </div>
@@ -1069,9 +828,7 @@
                     <div class="text-center py-4">
 
                         <div class="empty-icon">
-
                             <i data-lucide="activity"></i>
-
                         </div>
 
                         <div class="empty-title">
@@ -1094,15 +851,12 @@
 
 </div>
 
-
-<!-- =====================================================
-     DETAIL USER MODAL
-====================================================== -->
-
+<!-- MODAL DETAIL PENGGUNA -->
 <div
     class="modal fade"
     id="userDetailModal"
     tabindex="-1"
+    aria-labelledby="userDetailModalLabel"
     aria-hidden="true"
 >
 
@@ -1110,24 +864,22 @@
 
         <div class="modal-content">
 
-
             <div class="modal-header">
 
-                <h5 class="modal-title">
+                <h5 class="modal-title" id="userDetailModalLabel">
                     Detail Pengguna
                 </h5>
 
                 <button
                     type="button"
                     class="btn-close"
-                    data-bs-dismiss="modal"
+                    aria-label="Tutup"
+                    onclick="closeUserDetail()"
                 ></button>
 
             </div>
 
-
             <div class="modal-body">
-
 
                 <div class="detail-profile">
 
@@ -1139,92 +891,33 @@
                     >
 
                     <div>
-
-                        <div
-                            class="detail-name"
-                            id="detailName"
-                        >
-                            -
-                        </div>
-
-                        <div
-                            class="detail-email"
-                            id="detailEmail"
-                        >
-                            -
-                        </div>
-
+                        <div class="detail-name" id="detailName">-</div>
+                        <div class="detail-email" id="detailEmail">-</div>
                     </div>
 
                 </div>
 
-
                 <div class="detail-grid">
 
-
                     <div class="detail-box">
-
-                        <div class="detail-label">
-                            SEKOLAH
-                        </div>
-
-                        <div
-                            class="detail-value"
-                            id="detailSekolah"
-                        >
-                            -
-                        </div>
-
+                        <div class="detail-label">SEKOLAH</div>
+                        <div class="detail-value" id="detailSekolah">-</div>
                     </div>
 
-
                     <div class="detail-box">
-
-                        <div class="detail-label">
-                            KELAS
-                        </div>
-
-                        <div
-                            class="detail-value"
-                            id="detailKelas"
-                        >
-                            -
-                        </div>
-
+                        <div class="detail-label">KELAS</div>
+                        <div class="detail-value" id="detailKelas">-</div>
                     </div>
 
-
                     <div class="detail-box">
-
-                        <div class="detail-label">
-                            STATUS
-                        </div>
-
-                        <div
-                            class="detail-value"
-                            id="detailStatus"
-                        >
-                            -
-                        </div>
-
+                        <div class="detail-label">STATUS</div>
+                        <div class="detail-value" id="detailStatus">-</div>
                     </div>
 
-
                     <div class="detail-box">
-
-                        <div class="detail-label">
-                            BERGABUNG
-                        </div>
-
-                        <div
-                            class="detail-value"
-                            id="detailCreated"
-                        >
-                            -
-                        </div>
-
+                        <div class="detail-label">BERGABUNG</div>
+                        <div class="detail-value" id="detailCreated">-</div>
                     </div>
-
 
                 </div>
 
@@ -1236,124 +929,128 @@
 
 </div>
 
-
-<!-- =====================================================
-     JAVASCRIPT
-====================================================== -->
-
+<!-- JAVASCRIPT -->
 <script>
-
-document.addEventListener('DOMContentLoaded', function () {
-
-    /*
-    |--------------------------------------------------------------------------
-    | LUCIDE ICON
-    |--------------------------------------------------------------------------
-    */
-
-    if (typeof lucide !== 'undefined') {
-
-        lucide.createIcons();
-
-    }
-
-});
-
-
-/*
-|--------------------------------------------------------------------------
-| DETAIL USER
-|--------------------------------------------------------------------------
-*/
-
+/* MEMBUKA DETAIL PENGGUNA */
 function showUserDetail(button) {
 
-    const name =
-        button.getAttribute('data-name') || '-';
+    const name = button.dataset.name || '-';
+    const email = button.dataset.email || '-';
+    const sekolah = button.dataset.sekolah || '-';
+    const kelas = button.dataset.kelas || '-';
+    const status = button.dataset.status || '-';
+    const created = button.dataset.created || '-';
 
-    const email =
-        button.getAttribute('data-email') || '-';
-
-    const sekolah =
-        button.getAttribute('data-sekolah') || '-';
-
-    const kelas =
-        button.getAttribute('data-kelas') || '-';
-
-    const status =
-        button.getAttribute('data-status') || '-';
-
-    const created =
-        button.getAttribute('data-created') || '-';
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | SET DATA
-    |--------------------------------------------------------------------------
-    */
-
-    document.getElementById('detailName').textContent =
-        name;
-
-    document.getElementById('detailEmail').textContent =
-        email;
-
-    document.getElementById('detailSekolah').textContent =
-        sekolah;
-
-    document.getElementById('detailKelas').textContent =
-        kelas;
-
+    // Mengisi data modal
+    document.getElementById('detailName').textContent = name;
+    document.getElementById('detailEmail').textContent = email;
+    document.getElementById('detailSekolah').textContent = sekolah;
+    document.getElementById('detailKelas').textContent = kelas;
     document.getElementById('detailStatus').textContent =
-        status;
+        status.replaceAll('_', ' ').toUpperCase();
+    document.getElementById('detailCreated').textContent = created;
 
-    document.getElementById('detailCreated').textContent =
-        created;
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | AVATAR
-    |--------------------------------------------------------------------------
-    */
-
+    // Membuat avatar berdasarkan nama
     document.getElementById('detailAvatar').src =
         'https://ui-avatars.com/api/?name=' +
         encodeURIComponent(name) +
         '&background=363e79&color=ffffff';
 
+    const modalElement = document.getElementById('userDetailModal');
+
+    // Jika Bootstrap JavaScript tersedia
+    if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+
+        const modal = bootstrap.Modal.getOrCreateInstance(modalElement);
+        modal.show();
+
+    } else {
+
+        // Fallback jika Bootstrap JavaScript tidak tersedia
+        modalElement.classList.add('fallback-modal');
+        modalElement.classList.add('show');
+        modalElement.style.display = 'block';
+        modalElement.removeAttribute('aria-hidden');
+
+        document.body.classList.add('modal-open-fallback');
+
+    }
 }
 
+/* MENUTUP MODAL */
+function closeUserDetail() {
 
-/*
-|--------------------------------------------------------------------------
-| AUTO HIDE ALERT
-|--------------------------------------------------------------------------
-*/
+    const modalElement = document.getElementById('userDetailModal');
 
-setTimeout(function () {
+    if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
 
-    const alerts =
-        document.querySelectorAll('.alert');
+        const modal = bootstrap.Modal.getInstance(modalElement);
 
-    alerts.forEach(function (alert) {
+        if (modal) {
+            modal.hide();
+        }
 
-        alert.style.transition =
-            'opacity .3s';
+    } else {
 
+        modalElement.classList.remove('show');
+        modalElement.style.display = 'none';
+        modalElement.setAttribute('aria-hidden', 'true');
+
+        document.body.classList.remove('modal-open-fallback');
+
+    }
+}
+
+/* MENUTUP MODAL SAAT AREA LUAR DIKLIK */
+document.addEventListener('click', function(event) {
+
+    const modalElement = document.getElementById('userDetailModal');
+
+    if (
+        modalElement &&
+        modalElement.classList.contains('fallback-modal') &&
+        event.target === modalElement
+    ) {
+        closeUserDetail();
+    }
+
+});
+
+/* MENUTUP MODAL DENGAN TOMBOL ESC */
+document.addEventListener('keydown', function(event) {
+
+    if (event.key === 'Escape') {
+        closeUserDetail();
+    }
+
+});
+
+/* ICON LUCIDE */
+document.addEventListener('DOMContentLoaded', function() {
+
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+    }
+
+});
+
+/* AUTO HIDE ALERT */
+setTimeout(function() {
+
+    const alerts = document.querySelectorAll('.alert');
+
+    alerts.forEach(function(alert) {
+
+        alert.style.transition = 'opacity .3s';
         alert.style.opacity = '0';
 
-        setTimeout(function () {
-
+        setTimeout(function() {
             alert.remove();
-
         }, 300);
 
     });
 
 }, 4000);
-
 </script>
 
 @endsection

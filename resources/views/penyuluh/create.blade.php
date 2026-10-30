@@ -429,11 +429,6 @@
 
         @endif
 
-
-        <!-- =================================================
-             FORM
-        ================================================= -->
-
         <form
             action="{{ route('penyuluh.store') }}"
             method="POST"
@@ -441,41 +436,15 @@
 
             @csrf
 
-
             <div class="form-grid">
-
-
-                <!-- =================================================
-                     INFO LOGIN
-                ================================================= -->
-
-                <div class="info-box">
-
-                    <div class="info-title">
-
-                        <i data-lucide="info"></i>
-
-                        <span>
-                            Informasi Akun Login
-                        </span>
-
-                    </div>
-
-                    Email dan password yang dibuat oleh admin
-                    akan digunakan oleh penyuluh untuk masuk
-                    ke sistem EduKum.
-
-                    <br>
-
-                    Email yang sama juga dapat digunakan
-                    untuk login menggunakan Google.
-
+                        
+            <div class="info-box">
+                <div class="info-title">
+                    <i data-lucide="info"></i>
+                    <span>Informasi Login</span>
                 </div>
-
-
-                <!-- =================================================
-                     NAMA
-                ================================================= -->
+                Gunakan email dan password atau akun Google untuk login.
+            </div>
 
                 <div class="form-group">
 

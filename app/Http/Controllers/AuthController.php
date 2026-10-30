@@ -10,19 +10,14 @@ use Laravel\Socialite\Facades\Socialite;
 
 class AuthController extends Controller
 {
-    // =====================================================
-    // TAMPILKAN HALAMAN LOGIN
-    // =====================================================
-
     public function showLogin()
     {
+        if (session()->has('user')) {
+            return redirect()->route('dashboard');
+        }
+
         return view('login');
     }
-
-
-    // =====================================================
-    // LOGIN EMAIL & PASSWORD
-    // =====================================================
 
     public function login(Request $request)
     {
@@ -36,100 +31,49 @@ class AuthController extends Controller
         ]);
 
         $email = strtolower(trim($request->email));
-
-        // =================================================
-        // CARI AKUN USER
-        // =================================================
-
         $user = User::where('email', $email)->first();
 
-        // EMAIL TIDAK TERDAFTAR
-        if (!$user) {
+        if (!$user || !$user->password ||
+            !Hash::check($request->password, $user->password)) {
             return back()
                 ->withErrors([
-                    'email' => 'Email tidak terdaftar.',
+                    'email' => 'Email atau kata sandi salah.',
                 ])
-                ->withInput(
-                    $request->only('email')
-                );
+                ->withInput($request->only('email'));
         }
 
+        $role = strtolower(trim($user->role ?? ''));
 
-        // =================================================
-        // CEK DATA PENYULUH
-        // =================================================
+        // Admin tidak perlu memiliki data pada tabel penyuluh.
+        if ($role === 'penyuluh') {
+            $penyuluh = Penyuluh::where('email', $email)->first();
 
-        $penyuluh = Penyuluh::where(
-            'email',
-            $email
-        )->first();
-
-        // AKUN USER ADA TAPI BUKAN PENYULUH
-        if (!$penyuluh) {
-            return back()
-                ->withErrors([
-                    'email' =>
-                        'Akun Anda belum terdaftar sebagai penyuluh.',
-                ])
-                ->withInput(
-                    $request->only('email')
-                );
-        }
-
-
-        // =================================================
-        // CEK STATUS AKSES
-        // =================================================
-
-        if ($penyuluh->status !== 'Aktif') {
-
-            if ($penyuluh->status === 'Pending') {
-
-                $pesan =
-                    'Akun Anda masih menunggu persetujuan admin.';
-
-            } else {
-
-                $pesan =
-                    'Akun Anda sudah dinonaktifkan oleh admin.';
+            if (!$penyuluh) {
+                return back()
+                    ->withErrors([
+                        'email' => 'Data penyuluh belum terdaftar.',
+                    ])
+                    ->withInput($request->only('email'));
             }
 
+            $status = strtolower(trim($penyuluh->status ?? ''));
+
+            if ($status !== 'aktif') {
+                $pesan = $status === 'pending'
+                    ? 'Akun Anda masih menunggu persetujuan admin.'
+                    : 'Akun Anda sudah dinonaktifkan oleh admin.';
+
+                return back()
+                    ->withErrors(['email' => $pesan])
+                    ->withInput($request->only('email'));
+            }
+        } elseif ($role !== 'admin') {
             return back()
                 ->withErrors([
-                    'email' => $pesan,
+                    'email' => 'Role akun tidak valid. Hubungi admin.',
                 ])
-                ->withInput(
-                    $request->only('email')
-                );
+                ->withInput($request->only('email'));
         }
-
-
-        // =================================================
-        // CEK PASSWORD
-        // =================================================
-
-        if (
-            !$user->password ||
-            !Hash::check(
-                $request->password,
-                $user->password
-            )
-        ) {
-
-            return back()
-                ->withErrors([
-                    'password' =>
-                        'Kata sandi yang Anda masukkan salah.',
-                ])
-                ->withInput(
-                    $request->only('email')
-                );
-        }
-
-
-        // =================================================
-        // LOGIN BERHASIL
-        // =================================================
 
         $request->session()->regenerate();
 
@@ -137,170 +81,103 @@ class AuthController extends Controller
             'id' => $user->id,
             'name' => $user->name ?? $user->nama ?? $user->email,
             'email' => $user->email,
+            'avatar' => $user->avatar,
+            'role' => $role,
         ]);
-
-        $request->session()->save();
 
         return redirect()->route('dashboard');
     }
-
-
-    // =====================================================
-    // REDIRECT KE GOOGLE
-    // =====================================================
 
     public function redirectToGoogle()
     {
         return Socialite::driver('google')->redirect();
     }
 
-
-    // =====================================================
-    // CALLBACK GOOGLE
-    // =====================================================
-
-    public function handleGoogleCallback()
+    public function handleGoogleCallback(Request $request)
     {
         try {
+            $googleUser = Socialite::driver('google')->user();
+            $email = strtolower(trim($googleUser->getEmail() ?? ''));
 
-            // =================================================
-            // AMBIL DATA DARI GOOGLE
-            // =================================================
+            if (!$email) {
+                return redirect('/')
+                    ->withErrors([
+                        'email' => 'Email Google tidak berhasil diperoleh.',
+                    ]);
+            }
 
-            $googleUser =
-                Socialite::driver('google')->user();
+            $user = User::where('email', $email)->first();
 
-
-            // =================================================
-            // AMBIL EMAIL
-            // =================================================
-
-            $email = strtolower(
-                trim($googleUser->getEmail())
-            );
-
-
-            // =================================================
-            // CARI AKUN USER
-            // =================================================
-
-            $user = User::where(
-                'email',
-                $email
-            )->first();
-
-
-            // EMAIL BELUM TERDAFTAR DI USERS
             if (!$user) {
-
                 return redirect('/')
                     ->withErrors([
-                        'email' =>
-                            'Email Google Anda belum terdaftar atau belum mendapatkan akses.',
+                        'email' => 'Email Google belum terdaftar atau belum mendapatkan akses.',
                     ]);
             }
 
+            $role = strtolower(trim($user->role ?? ''));
 
-            // =================================================
-            // CARI DATA PENYULUH
-            // =================================================
+            // Hanya penyuluh yang harus memiliki data penyuluh aktif.
+            if ($role === 'penyuluh') {
+                $penyuluh = Penyuluh::where('email', $email)->first();
 
-            $penyuluh = Penyuluh::where(
-                'email',
-                $email
-            )->first();
-
-
-            // AKUN TIDAK TERDAFTAR SEBAGAI PENYULUH
-            if (!$penyuluh) {
-
-                return redirect('/')
-                    ->withErrors([
-                        'email' =>
-                            'Email Anda belum terdaftar sebagai penyuluh.',
-                    ]);
-            }
-
-
-            // =================================================
-            // CEK STATUS PENYULUH
-            // =================================================
-
-            if ($penyuluh->status !== 'Aktif') {
-
-                if ($penyuluh->status === 'Pending') {
-
-                    $pesan =
-                        'Akun Anda masih menunggu persetujuan admin.';
-
-                } else {
-
-                    $pesan =
-                        'Akun Anda sudah dinonaktifkan oleh admin.';
+                if (!$penyuluh) {
+                    return redirect('/')
+                        ->withErrors([
+                            'email' => 'Data penyuluh belum terdaftar.',
+                        ]);
                 }
 
-                return redirect('/')
-                    ->withErrors([
+                $status = strtolower(trim($penyuluh->status ?? ''));
+
+                if ($status !== 'aktif') {
+                    $pesan = $status === 'pending'
+                        ? 'Akun Anda masih menunggu persetujuan admin.'
+                        : 'Akun Anda sudah dinonaktifkan oleh admin.';
+
+                    return redirect('/')->withErrors([
                         'email' => $pesan,
                     ]);
+                }
+            } elseif ($role !== 'admin') {
+                return redirect('/')->withErrors([
+                    'email' => 'Role akun tidak valid. Hubungi admin.',
+                ]);
             }
-
-
-            // =================================================
-            // AMBIL FOTO GOOGLE
-            // =================================================
 
             $avatar = $googleUser->getAvatar();
 
-
-            // =================================================
-            // SIMPAN FOTO GOOGLE
-            // =================================================
-
-            if ($avatar) {
-
+            if (!empty($avatar)) {
                 $user->avatar = $avatar;
-
                 $user->save();
             }
 
+            $request->session()->regenerate();
 
-            // Refresh user
-            $user->refresh();
-
-
-            // =================================================
-            // LOGIN
-            // =================================================
-
-            session([
-                'user' => $user,
+            $request->session()->put('user', [
+                'id' => $user->id,
+                'name' => $user->name ?? $user->nama ?? $user->email,
+                'email' => $user->email,
+                'avatar' => $user->avatar ?? $avatar,
+                'role' => $role,
             ]);
 
+            return redirect()->route('dashboard');
 
-            return redirect('/dashboard');
-
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
+            report($e);
 
             return redirect('/')
                 ->withErrors([
-                    'email' =>
-                        'Login dengan Google gagal. Silakan coba lagi.',
+                    'email' => 'Login Google gagal. Periksa konfigurasi Google OAuth dan coba lagi.',
                 ]);
         }
     }
 
-
-    // =====================================================
-    // LOGOUT
-    // =====================================================
-
     public function logout(Request $request)
     {
-        session()->forget('user');
-
+        $request->session()->forget('user');
         $request->session()->invalidate();
-
         $request->session()->regenerateToken();
 
         return redirect('/');

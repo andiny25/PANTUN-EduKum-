@@ -1,4 +1,3 @@
-```php
 <?php
 
 use Illuminate\Support\Facades\Route;
@@ -16,6 +15,7 @@ use App\Http\Controllers\HasilKuisController;
 use App\Http\Controllers\PaketPenyuluhanController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\NotifikasiController;
 
 
 // =====================================================
@@ -230,3 +230,16 @@ Route::get('/global-search', [
     SearchController::class,
     'search',
 ])->name('global.search');
+
+Route::get('/notifikasi', [NotifikasiController::class, 'index'])
+    ->name('notifikasi.index');
+
+Route::patch('/notifikasi/{id}/dibaca', [
+    NotifikasiController::class,
+    'tandaiDibaca'
+])->name('notifikasi.dibaca');
+
+Route::patch('/notifikasi-dibaca-semua', [
+    NotifikasiController::class,
+    'tandaiSemuaDibaca'
+])->name('notifikasi.dibaca-semua');

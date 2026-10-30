@@ -13,6 +13,6 @@ class Siswa extends Model
         'email',
         'sekolah',
         'kelas',
-        'status'
+        'status',
     ];
 }
